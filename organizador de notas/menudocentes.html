@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma Académica - Panel Docente</title>
+    <link rel="stylesheet" href="menudocentes.css">
+</head>
+<body>
+    <header class="navbar">
+        <a href="menu.html" class="nav-brand" aria-label="Organizador de Notas">
+            <span class="nav-logo" aria-hidden="true">📖</span>
+            <div class="nav-titles">
+                <strong>Organizador de Notas</strong>
+                <small>I.E. INOCENCIO CHINCÁ</small>
+            </div>
+        </a>
+
+        <div class="nav-actions">
+            <div class="user-menu" id="notifMenu">
+                <button class="icon-btn" id="notifBtn" aria-label="Notificaciones" aria-haspopup="true">
+                    🔔
+                    <span class="icon-badge" id="notifBadge">3</span>
+                </button>
+                <div class="dropdown-panel notif-panel" id="notifPanel">
+                    <div class="notif-item">
+                        <strong>12 actividades pendientes por calificar</strong>
+                        <span>Taller de ecuaciones cuadráticas · 10°A</span>
+                    </div>
+                    <div class="notif-item">
+                        <strong>Reunión de área - Ciencias</strong>
+                        <span>Hoy · 3:00 p. m.</span>
+                    </div>
+                    <div class="notif-item">
+                        <strong>Nuevo mensaje de coordinación</strong>
+                        <span>Recordatorio de entrega de planillas</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="user-menu" id="userMenu">
+                <button class="user-trigger" id="userTrigger" aria-haspopup="true">
+                    <span class="user-avatar" id="userAvatar">D</span>
+                    <span class="user-name" id="navUserName">Docente</span>
+                    <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="dropdown-panel" id="userPanel">
+                    <a href="#" data-section="perfil">👤 Mi perfil</a>
+                    <div class="dropdown-divider"></div>
+                    <button type="button" id="logoutBtn">🚪 Cerrar sesión</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-group">
+                <ul class="sidebar-menu">
+                    <li class="sidebar-item active"><a href="#" data-section="inicio"><span class="sidebar-icon">🏠</span> Inicio</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-group">
+                <p class="sidebar-label">GESTIÓN</p>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-item"><a href="#" data-section="cursos"><span class="sidebar-icon">📚</span> Mis Cursos</a></li>
+                    <li class="sidebar-item"><a href="#" data-section="estudiantes"><span class="sidebar-icon">👥</span> Estudiantes</a></li>
+                    <li class="sidebar-item"><a href="#" data-section="calificaciones"><span class="sidebar-icon">☑️</span> Calificaciones</a></li>
+                    <li class="sidebar-item"><a href="#" data-section="actividades"><span class="sidebar-icon">📋</span> Actividades</a></li>
+                    <li class="sidebar-item"><a href="#" data-section="reportes"><span class="sidebar-icon">📊</span> Reportes</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-group">
+                <p class="sidebar-label">CONFIGURACIÓN</p>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-item"><a href="#" data-section="perfil"><span class="sidebar-icon">👤</span> Perfil</a></li>
+                    <li class="sidebar-item"><a href="#" id="logoutBtnSidebar"><span class="sidebar-icon">🚪</span> Cerrar sesión</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <main class="dashboard-content">
+
+            <!-- INICIO -->
+            <section class="panel active-panel" id="panel-inicio">
+                <header class="dash-header">
+                    <div>
+                        <h1>Bienvenido, <span id="welcomeName">Docente</span> 👋</h1>
+                        <p>Aquí puedes gestionar tus cursos, estudiantes y calificaciones.</p>
+                    </div>
+                    <div class="date-badge">📅 <strong>Fecha:</strong> <span id="todayDate">27 de agosto de 2026</span></div>
+                </header>
+
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon blue">📘</div>
+                        <div class="metric-info"><h3>5</h3><p>Cursos activos</p></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon green">👥</div>
+                        <div class="metric-info"><h3>128</h3><p>Estudiantes registrados</p></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon amber">📝</div>
+                        <div class="metric-info"><h3>12</h3><p>Pendientes por evaluar</p></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon purple">📈</div>
+                        <div class="metric-info"><h3>4.2</h3><p>Promedio de cursos</p></div>
+                    </div>
+                </div>
+
+                <div class="dash-grid">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h2>Mis Cursos</h2>
+                            <button class="btn-link" data-section="cursos">Ver todos</button>
+                        </div>
+                        <table class="data-table">
+                            <thead><tr><th>Curso</th><th>Grado</th><th>Estudiantes</th><th>Promedio</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong>Matemáticas</strong></td><td>10°A</td><td>28</td><td><span class="badge-score">4.3</span></td></tr>
+                                <tr><td><strong>Ciencias Naturales</strong></td><td>10°B</td><td>26</td><td><span class="badge-score">4.1</span></td></tr>
+                                <tr><td><strong>Física</strong></td><td>11°A</td><td>24</td><td><span class="badge-score">4.4</span></td></tr>
+                                <tr><td><strong>Química</strong></td><td>11°B</td><td>25</td><td><span class="badge-score">4.2</span></td></tr>
+                                <tr><td><strong>Tecnología</strong></td><td>10°C</td><td>25</td><td><span class="badge-score">4.0</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h2>Actividades pendientes</h2>
+                            <button class="btn-link" data-section="actividades">Ver todas</button>
+                        </div>
+                        <div class="activity-list">
+                            <div class="list-item">
+                                <div class="list-item-info"><strong>Taller: Ecuaciones cuadráticas</strong><small>10°A - Matemáticas</small></div>
+                                <span class="badge-tag">12 pendientes</span>
+                            </div>
+                            <div class="list-item">
+                                <div class="list-item-info"><strong>Laboratorio: Reacciones químicas</strong><small>11°B - Química</small></div>
+                                <span class="badge-tag">8 pendientes</span>
+                            </div>
+                            <div class="list-item">
+                                <div class="list-item-info"><strong>Quiz: Electricidad y Magnetismo</strong><small>11°A - Física</small></div>
+                                <span class="badge-tag">15 pendientes</span>
+                            </div>
+                            <div class="list-item">
+                                <div class="list-item-info"><strong>Proyecto: Cuidado del ambiente</strong><small>10°B - Ciencias Naturales</small></div>
+                                <span class="badge-tag">7 pendientes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dash-grid">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h2>Últimas calificaciones registradas</h2>
+                            <button class="btn-link" data-section="calificaciones">Ver todas</button>
+                        </div>
+                        <table class="data-table">
+                            <thead><tr><th>Estudiante</th><th>Curso</th><th>Actividad</th><th>Calificación</th><th>Fecha</th></tr></thead>
+                            <tbody>
+                                <tr><td>María José Pérez</td><td>Matemáticas (10°A)</td><td>Taller: Funciones</td><td><span class="badge-score">4.5</span></td><td>18/08/2026</td></tr>
+                                <tr><td>Juan Esteban Gómez</td><td>Física (11°A)</td><td>Quiz: Ondas</td><td><span class="badge-score">4.2</span></td><td>18/08/2026</td></tr>
+                                <tr><td>Valentina Rodríguez</td><td>Química (11°B)</td><td>Laboratorio: Ácidos y Bases</td><td><span class="badge-score">4.8</span></td><td>17/08/2026</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="dash-card-header"><h2>Accesos rápidos</h2></div>
+                        <div class="quick-actions">
+                            <a href="#" class="quick-action" data-section="actividades"><span class="quick-icon" style="background:var(--blue-soft);color:var(--blue);">➕</span> Crear actividad</a>
+                            <a href="#" class="quick-action" data-section="calificaciones"><span class="quick-icon" style="background:var(--green-soft);color:var(--green-dark);">✏️</span> Registrar calificación</a>
+                            <a href="#" class="quick-action" data-section="reportes"><span class="quick-icon" style="background:var(--purple-soft);color:var(--purple);">📊</span> Generar reporte</a>
+                            <a href="#" class="quick-action" data-section="cursos"><span class="quick-icon" style="background:var(--amber-soft);color:var(--amber);">🎓</span> Ver mis cursos</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MIS CURSOS -->
+            <section class="panel" id="panel-cursos">
+                <header class="dash-header"><div><h1>Mis Cursos</h1><p>Gestiona el contenido y las notas de cada curso a tu cargo.</p></div></header>
+                <div class="card-grid">
+                    <div class="course-card"><span class="course-tag">10°A</span><h3>Matemáticas</h3><p>28 estudiantes · Álgebra y geometría</p><div class="course-meta"><span>Promedio: 4.3</span><span>Progreso: 78%</span></div></div>
+                    <div class="course-card"><span class="course-tag">10°B</span><h3>Ciencias Naturales</h3><p>26 estudiantes · Ecosistemas y biología</p><div class="course-meta"><span>Promedio: 4.1</span><span>Progreso: 70%</span></div></div>
+                    <div class="course-card"><span class="course-tag">11°A</span><h3>Física</h3><p>24 estudiantes · Electricidad y magnetismo</p><div class="course-meta"><span>Promedio: 4.4</span><span>Progreso: 82%</span></div></div>
+                    <div class="course-card"><span class="course-tag">11°B</span><h3>Química</h3><p>25 estudiantes · Ácidos, bases y reacciones</p><div class="course-meta"><span>Promedio: 4.2</span><span>Progreso: 75%</span></div></div>
+                    <div class="course-card"><span class="course-tag">10°C</span><h3>Tecnología</h3><p>25 estudiantes · Programación básica</p><div class="course-meta"><span>Promedio: 4.0</span><span>Progreso: 65%</span></div></div>
+                </div>
+            </section>
+
+            <!-- ESTUDIANTES -->
+            <section class="panel" id="panel-estudiantes">
+                <header class="dash-header"><div><h1>Estudiantes</h1><p>Consulta el listado de estudiantes de tus cursos.</p></div></header>
+                <div class="section-toolbar">
+                    <div class="search-box">🔍 <input type="text" placeholder="Buscar estudiante..."></div>
+                    <button class="primary-btn" type="button">+ Nuevo estudiante</button>
+                </div>
+                <div class="dash-card">
+                    <table class="data-table">
+                        <thead><tr><th>Estudiante</th><th>Curso</th><th>Grado</th><th>Promedio</th><th></th></tr></thead>
+                        <tbody>
+                            <tr><td>María José Pérez</td><td>Matemáticas</td><td>10°A</td><td><span class="badge-score">4.5</span></td><td class="row-link">→</td></tr>
+                            <tr><td>Juan Esteban Gómez</td><td>Física</td><td>11°A</td><td><span class="badge-score">4.2</span></td><td class="row-link">→</td></tr>
+                            <tr><td>Valentina Rodríguez</td><td>Química</td><td>11°B</td><td><span class="badge-score">4.8</span></td><td class="row-link">→</td></tr>
+                            <tr><td>Andrés Felipe Torres</td><td>Ciencias Naturales</td><td>10°B</td><td><span class="badge-score">3.9</span></td><td class="row-link">→</td></tr>
+                            <tr><td>Laura Camila Rojas</td><td>Tecnología</td><td>10°C</td><td><span class="badge-score">4.1</span></td><td class="row-link">→</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- CALIFICACIONES -->
+            <section class="panel" id="panel-calificaciones">
+                <header class="dash-header"><div><h1>Calificaciones</h1><p>Registra y consulta las notas de tus actividades.</p></div></header>
+                <div class="section-toolbar">
+                    <div class="search-box">🔍 <input type="text" placeholder="Buscar por estudiante o curso..."></div>
+                    <button class="primary-btn" type="button">+ Registrar calificación</button>
+                </div>
+                <div class="dash-card">
+                    <table class="data-table">
+                        <thead><tr><th>Estudiante</th><th>Curso</th><th>Actividad</th><th>Calificación</th><th>Fecha</th></tr></thead>
+                        <tbody>
+                            <tr><td>María José Pérez</td><td>Matemáticas (10°A)</td><td>Taller: Funciones</td><td><span class="badge-score">4.5</span></td><td>18/08/2026</td></tr>
+                            <tr><td>Juan Esteban Gómez</td><td>Física (11°A)</td><td>Quiz: Ondas</td><td><span class="badge-score">4.2</span></td><td>18/08/2026</td></tr>
+                            <tr><td>Valentina Rodríguez</td><td>Química (11°B)</td><td>Laboratorio: Ácidos y Bases</td><td><span class="badge-score">4.8</span></td><td>17/08/2026</td></tr>
+                            <tr><td>Andrés Felipe Torres</td><td>Ciencias Naturales (10°B)</td><td>Evaluación: Ecosistemas</td><td><span class="badge-score">3.9</span></td><td>16/08/2026</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ACTIVIDADES -->
+            <section class="panel" id="panel-actividades">
+                <header class="dash-header"><div><h1>Actividades</h1><p>Crea y da seguimiento a los talleres, quices y proyectos de tus cursos.</p></div></header>
+                <div class="section-toolbar">
+                    <div class="search-box">🔍 <input type="text" placeholder="Buscar actividad..."></div>
+                    <button class="primary-btn" type="button">+ Crear actividad</button>
+                </div>
+                <div class="simple-list">
+                    <div class="list-item"><div class="list-item-info"><strong>Taller: Ecuaciones cuadráticas</strong><small>10°A - Matemáticas · Entrega: 22 ago.</small></div><span class="badge-tag amber">12 pendientes</span></div>
+                    <div class="list-item"><div class="list-item-info"><strong>Laboratorio: Reacciones químicas</strong><small>11°B - Química · Entrega: 25 ago.</small></div><span class="badge-tag amber">8 pendientes</span></div>
+                    <div class="list-item"><div class="list-item-info"><strong>Quiz: Electricidad y Magnetismo</strong><small>11°A - Física · Entrega: 26 ago.</small></div><span class="badge-tag amber">15 pendientes</span></div>
+                    <div class="list-item"><div class="list-item-info"><strong>Proyecto: Cuidado del ambiente</strong><small>10°B - Ciencias Naturales · Entrega: 28 ago.</small></div><span class="badge-tag green">Calificado</span></div>
+                </div>
+            </section>
+
+            <!-- REPORTES -->
+            <section class="panel" id="panel-reportes">
+                <header class="dash-header"><div><h1>Reportes</h1><p>Resumen del desempeño académico de tus cursos.</p></div></header>
+                <div class="report-grid">
+                    <div class="report-card"><h3>Matemáticas 10°A</h3><div class="report-value">4.3</div><div class="report-bar-track"><div class="report-bar-fill" style="width:86%"></div></div><p style="font-size:12.5px;color:var(--muted)">86% de aprobación</p></div>
+                    <div class="report-card"><h3>Física 11°A</h3><div class="report-value">4.4</div><div class="report-bar-track"><div class="report-bar-fill" style="width:88%"></div></div><p style="font-size:12.5px;color:var(--muted)">88% de aprobación</p></div>
+                    <div class="report-card"><h3>Química 11°B</h3><div class="report-value">4.2</div><div class="report-bar-track"><div class="report-bar-fill" style="width:80%"></div></div><p style="font-size:12.5px;color:var(--muted)">80% de aprobación</p></div>
+                </div>
+            </section>
+
+            <!-- PERFIL -->
+            <section class="panel" id="panel-perfil">
+                <header class="dash-header"><div><h1>Mi Perfil</h1><p>Información de tu cuenta docente.</p></div></header>
+                <div class="profile-card">
+                    <div class="profile-avatar" id="profileAvatar">D</div>
+                    <div class="profile-details">
+                        <h2 id="profileName">Docente</h2>
+                        <p id="profileEmail">docente@institucion.edu.co</p>
+                        <p>Institución Educativa Inocencio Chincá · Tame, Arauca</p>
+                        <p>Rol: Docente</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-school">
+            <div class="shield" aria-hidden="true">✦</div>
+            <div><strong>Institución Educativa Inocencio Chincá</strong>Tame, Arauca</div>
+        </div>
+        <span>© <span id="footerYear">2026</span> Organizador de Notas</span>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="menudocentes.js"></script>
+</body>
+</html>

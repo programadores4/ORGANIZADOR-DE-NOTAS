@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizador de Notas</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="#" class="brand" data-view="inicio" aria-label="Organizador de Notas - Inicio">
+            <span class="brand-icon" aria-hidden="true">
+                <svg viewBox="0 0 64 64" fill="none">
+                    <path d="M8 11c8-5 16-5 24 1v40c-8-6-16-6-24-1V11Z" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
+                    <path d="M56 11c-8-5-16-5-24 1v40c8-6 16-6 24-1V11Z" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            <span class="brand-text">
+                <strong>Organizador de Notas</strong>
+                <small>I.E. INOCENCIO CHINCÁ</small>
+            </span>
+        </a>
+
+        <nav class="main-nav" aria-label="Navegación principal">
+            <a href="#" class="nav-link active" data-view="inicio">Inicio</a>
+            <a href="#" class="nav-link" data-view="proyecto">Proyecto</a>
+            <a href="#" class="nav-link" data-view="acerca">Acerca de</a>
+        </nav>
+
+        <button class="login-top" id="topLogin" type="button">
+            <span class="user-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="1.8"/>
+                    <path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+            </span>
+            Iniciar sesión
+        </button>
+    </header>
+
+    <main id="app">
+
+        <!-- INICIO -->
+        <section class="view view-inicio active-view" id="inicio">
+            <div class="hero">
+                <div class="hero-content">
+                    <p class="eyebrow">PROYECTO PRODUCTIVO</p>
+                    <h1>Organizador<br>de <span>Notas</span></h1>
+                    <div class="title-line"></div>
+                    <p class="hero-description">
+                        Aplicación web para el registro y consulta automatizada
+                        de calificaciones escolares en tiempo real.
+                    </p>
+                </div>
+
+                <div class="hero-decoration" aria-hidden="true">
+                    <div class="dot-pattern"></div>
+                    <div class="soft-circle"></div>
+                </div>
+            </div>
+
+            <section class="role-box" aria-label="Seleccionar tipo de usuario">
+                <div class="role-heading">
+                    <span></span>
+                    <h2>Ingresa según tu rol</h2>
+                    <span></span>
+                </div>
+
+                <div class="role-grid">
+                    <article class="role-card teacher-card">
+                        <div class="role-icon teacher-icon" aria-hidden="true">
+                            <svg viewBox="0 0 64 64" fill="none">
+                                <circle cx="23" cy="25" r="7" stroke="currentColor" stroke-width="3"/>
+                                <path d="M10 49c1.5-9 6.5-13 13-13s11.5 4 13 13" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                                <path d="M35 15h17v25H35" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+                                <path d="M35 31h-7" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <h3>Docente</h3>
+                        <p>Crea actividades, registra notas<br>y gestiona el rendimiento académico.</p>
+                        <button class="role-button teacher-button" type="button" data-role="docente">
+                            Acceder como docente <span>→</span>
+                        </button>
+                    </article>
+
+                    <article class="role-card student-card">
+                        <div class="role-icon student-icon" aria-hidden="true">
+                            <svg viewBox="0 0 64 64" fill="none">
+                                <path d="M13 25 32 15l19 10-19 10-19-10Z" fill="currentColor"/>
+                                <path d="M20 29v10c4 4 20 4 24 0V29" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+                                <circle cx="32" cy="23" r="4" fill="white"/>
+                                <path d="M48 28v11" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <h3>Estudiante</h3>
+                        <p>Consulta tus calificaciones, visualiza<br>tu promedio y rendimiento académico.</p>
+                        <button class="role-button student-button" type="button" data-role="estudiante">
+                            Acceder como estudiante <span>→</span>
+                        </button>
+                    </article>
+                </div>
+            </section>
+
+            <section class="features">
+                <div class="feature">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 40 40" fill="none">
+                            <path d="M20 4 33 9v10c0 8-5.5 13.5-13 17C12.5 32.5 7 27 7 19V9l13-5Z" stroke="currentColor" stroke-width="2"/>
+                            <rect x="15" y="17" width="10" height="9" rx="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M17 17v-3a3 3 0 0 1 6 0v3" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div><strong>Seguro</strong><p>Acceso restringido y protección<br>de datos personales.</p></div>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 40 40" fill="none">
+                            <path d="M7 34V23h7v11H7Zm10 0V16h7v18h-7Zm10 0V8h7v26h-7Z" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div><strong>Transparente</strong><p>Información clara y actualizada<br>en tiempo real.</p></div>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 40 40" fill="none">
+                            <path d="m23 3-15 21h10l-1 13 15-22H22l1-12Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div><strong>Eficiente</strong><p>Optimiza procesos y mejora la<br>comunicación académica.</p></div>
+                </div>
+            </section>
+        </section>
+
+        <!-- LOGIN -->
+        <section class="view login-view" id="login">
+            <div class="login-card" id="loginCard">
+                <aside class="login-side" id="loginSide">
+                    <div class="side-role-icon" id="sideRoleIcon"></div>
+                    <h2>Acceso para<br><span id="sideRoleText">Docentes</span></h2>
+
+                    <div class="school-illustration" id="schoolIllustration" aria-hidden="true">
+                        <div class="illustration-clock"></div>
+                        <div class="illustration-books">
+                            <i></i><i></i><i></i>
+                        </div>
+                        <div class="illustration-object"></div>
+                    </div>
+                </aside>
+
+                <div class="login-form-area">
+                    <button class="back-button" id="backHome" type="button">← Volver al inicio</button>
+
+                    <div class="login-heading">
+                        <h1>Ingreso para <span id="formRoleText">Docentes</span></h1>
+                        <p>Ingresa tus credenciales para acceder al sistema</p>
+                    </div>
+
+                    <form id="loginForm" novalidate>
+                        <label for="email">Correo <span id="emailLabel">electrónico</span></label>
+                        <div class="input-wrap">
+                            <span class="input-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/>
+                                    <path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.8"/>
+                                </svg>
+                            </span>
+                            <input id="email" type="email" autocomplete="email" placeholder="ejemplo@institucion.edu.co" required>
+                        </div>
+                        <small class="error-message" id="emailError"></small>
+
+                        <label for="password">Contraseña</label>
+                        <div class="input-wrap">
+                            <span class="input-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.8"/>
+                                    <path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.8"/>
+                                </svg>
+                            </span>
+                            <input id="password" type="password" autocomplete="current-password" placeholder="Ingresa tu contraseña" required minlength="4">
+                            <button type="button" class="eye-button" id="togglePassword" aria-label="Mostrar contraseña">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M3 12s3.2-6 9-6 9 6 9 6-3.2 6-9 6-9-6-9-6Z" stroke="currentColor" stroke-width="1.8"/>
+                                    <circle cx="12" cy="12" r="2.5" stroke="currentColor" stroke-width="1.8"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <small class="error-message" id="passwordError"></small>
+
+                        <div class="form-options">
+                            <label class="remember">
+                                <input type="checkbox" id="remember">
+                                <span class="custom-check"></span>
+                                Recordarme
+                            </label>
+                            <button type="button" class="forgot" id="forgotPassword">¿Olvidaste tu contraseña?</button>
+                        </div>
+
+                        <button class="submit-button" id="submitLogin" type="submit">
+                            <span class="submit-icon">↪</span> Iniciar sesión
+                        </button>
+                    </form>
+
+                    <div class="or-divider"><span></span><em>o continúa con</em><span></span></div>
+
+                    <button class="google-button" id="googleLogin" type="button">
+                        <strong>G</strong> Continuar con Google
+                    </button>
+
+                    <div class="create-account">
+                        ¿No tienes cuenta?
+                        <button type="button" id="createAccount">Crear cuenta</button>
+                    </div>
+
+                    <p class="demo-note">Modo demostración: esta interfaz funciona sin servidor.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROYECTO -->
+        <section class="view info-view" id="proyecto">
+            <div class="info-card">
+                <p class="eyebrow">PROYECTO PRODUCTIVO</p>
+                <h1>Organizador <span>de Notas</span></h1>
+                <p>Una solución web pensada para facilitar la gestión académica de la Institución Educativa Inocencio Chincá.</p>
+                <div class="info-grid">
+                    <div><b>01</b><h3>Registro</h3><p>Los docentes pueden organizar actividades y registrar calificaciones.</p></div>
+                    <div><b>02</b><h3>Consulta</h3><p>Los estudiantes pueden consultar sus notas y visualizar su promedio.</p></div>
+                    <div><b>03</b><h3>Seguimiento</h3><p>La información académica se presenta de forma clara y ordenada.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ACERCA -->
+        <section class="view info-view" id="acerca">
+            <div class="info-card about-card">
+                <p class="eyebrow">INSTITUCIÓN EDUCATIVA</p>
+                <h1>Acerca de <span>nosotros</span></h1>
+                <p>El Organizador de Notas es una propuesta digital para apoyar la comunicación académica entre docentes y estudiantes.</p>
+                <div class="about-highlight">
+                    <strong>I.E. INOCENCIO CHINCÁ</strong>
+                    <span>Tame, Arauca · Colombia</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer-school">
+            <div class="shield" aria-hidden="true">✦</div>
+            <div><strong>Institución Educativa Inocencio Chincá</strong><span>Tame, Arauca</span></div>
+        </div>
+        <p>© <span id="year"></span> Organizador de Notas. Todos los derechos reservados.</p>
+        <div class="footer-year">
+            <span class="calendar-symbol">▣</span>
+            <span id="footerYear"></span>
+        </div>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="menu.js"></script>
+</body>
+</html>

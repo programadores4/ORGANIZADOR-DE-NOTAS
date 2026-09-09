@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma Académica - Panel Estudiante</title>
+    <link rel="stylesheet" href="menuestudiantes.css">
+</head>
+<body>
+    <header class="navbar">
+        <a href="menu.html" class="nav-brand" aria-label="Organizador de Notas">
+            <span class="nav-logo" aria-hidden="true">🎓</span>
+            <div class="nav-titles">
+                <strong>Organizador de Notas</strong>
+                <small>I.E. INOCENCIO CHINCÁ</small>
+            </div>
+        </a>
+
+        <div class="nav-actions">
+            <div class="user-menu" id="notifMenu">
+                <button class="icon-btn" id="notifBtn" aria-label="Notificaciones" aria-haspopup="true">
+                    🔔
+                    <span class="icon-badge" id="notifBadge">2</span>
+                </button>
+                <div class="dropdown-panel notif-panel" id="notifPanel">
+                    <div class="notif-item">
+                        <strong>Recordatorio: Entrega de proyecto de ciencias</strong>
+                        <span>Publicado por Laura Sánchez</span>
+                    </div>
+                    <div class="notif-item">
+                        <strong>Cambio de horario - Reunión de padres</strong>
+                        <span>Publicado por Coordinación Académica</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="user-menu" id="userMenu">
+                <button class="user-trigger" id="userTrigger" aria-haspopup="true">
+                    <span class="user-avatar" id="userAvatar">E</span>
+                    <span class="user-name" id="navUserName">Estudiante</span>
+                    <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="dropdown-panel" id="userPanel">
+                    <a href="#" data-section="perfil">👤 Mi perfil</a>
+                    <div class="dropdown-divider"></div>
+                    <button type="button" id="logoutBtn">🚪 Cerrar sesión</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-group">
+                <ul class="sidebar-menu">
+                    <li class="sidebar-item active"><a href="#" data-section="inicio"><span class="sidebar-icon">🏠</span> Inicio</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-group">
+                <p class="sidebar-label">ACADÉMICO</p>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-item"><a href="#" data-section="calificaciones"><span class="sidebar-icon">☑️</span> Mis Calificaciones</a></li>
+                    <li class="sidebar-item"><a href="#" data-section="cursos"><span class="sidebar-icon">📚</span> Mis Cursos</a></li>
+                    <li class="sidebar-item"><a href="#" data-section="actividades"><span class="sidebar-icon">📋</span> Actividades</a></li>
+                    <li class="sidebar-item"><a href="#" data-section="calendario"><span class="sidebar-icon">📅</span> Calendario</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-group">
+                <p class="sidebar-label">HERRAMIENTAS</p>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-item"><a href="#" data-section="anuncios"><span class="sidebar-icon">📢</span> Anuncios</a></li>
+                    <li class="sidebar-item"><a href="#" data-section="recursos"><span class="sidebar-icon">📄</span> Recursos</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-group">
+                <p class="sidebar-label">CONFIGURACIÓN</p>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-item"><a href="#" data-section="perfil"><span class="sidebar-icon">👤</span> Perfil</a></li>
+                    <li class="sidebar-item"><a href="#" id="logoutBtnSidebar"><span class="sidebar-icon">🚪</span> Cerrar sesión</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <main class="dashboard-content">
+
+            <!-- INICIO -->
+            <section class="panel active-panel" id="panel-inicio">
+                <header class="dash-header">
+                    <div>
+                        <h1>¡Hola, <span id="welcomeName">Estudiante</span>! 👋</h1>
+                        <p>Consulta tus calificaciones, actividades y el progreso de tus cursos.</p>
+                    </div>
+                    <div class="date-badge">📅 <strong>Fecha:</strong> <span id="todayDate">27 de agosto de 2026</span></div>
+                </header>
+
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon purple">📖</div>
+                        <div class="metric-info"><h3>6</h3><p>Cursos inscritos</p></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon green">📊</div>
+                        <div class="metric-info"><h3>4.2</h3><p>Tu promedio actual</p></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon amber">⭐</div>
+                        <div class="metric-info"><h3>8</h3><p>Actividades pendientes</p></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon blue">🏅</div>
+                        <div class="metric-info"><h3>3 / 28</h3><p>Puesto en el curso</p></div>
+                    </div>
+                </div>
+
+                <div class="dash-grid">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h2>Mis Cursos</h2>
+                            <button class="btn-link" data-section="cursos">Ver todos</button>
+                        </div>
+                        <table class="data-table">
+                            <thead><tr><th>Curso</th><th>Docente</th><th>Promedio</th><th>Progreso</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong>Matemáticas (10°A)</strong></td><td>Carlos Andrés Mejía</td><td><span class="badge-score">4.3</span></td><td class="progress-cell"><span class="progress-track"><span class="progress-fill" style="width:85%"></span></span><span>85%</span></td></tr>
+                                <tr><td><strong>Ciencias Naturales (10°B)</strong></td><td>Laura Sánchez</td><td><span class="badge-score">4.1</span></td><td class="progress-cell"><span class="progress-track"><span class="progress-fill" style="width:78%"></span></span><span>78%</span></td></tr>
+                                <tr><td><strong>Física (11°A)</strong></td><td>Jorge Luis Ramírez</td><td><span class="badge-score">4.4</span></td><td class="progress-cell"><span class="progress-track"><span class="progress-fill" style="width:90%"></span></span><span>90%</span></td></tr>
+                                <tr><td><strong>Química (11°B)</strong></td><td>María Fernanda Ortiz</td><td><span class="badge-score">4.2</span></td><td class="progress-cell"><span class="progress-track"><span class="progress-fill" style="width:82%"></span></span><span>82%</span></td></tr>
+                                <tr><td><strong>Tecnología (10°C)</strong></td><td>Andrés Felipe López</td><td><span class="badge-score">4.0</span></td><td class="progress-cell"><span class="progress-track"><span class="progress-fill" style="width:75%"></span></span><span>75%</span></td></tr>
+                                <tr><td><strong>Inglés (10°A)</strong></td><td>Diana Marcela Rojas</td><td><span class="badge-score">4.5</span></td><td class="progress-cell"><span class="progress-track"><span class="progress-fill" style="width:88%"></span></span><span>88%</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h2>Próximas actividades</h2>
+                            <button class="btn-link" data-section="actividades">Ver todas</button>
+                        </div>
+                        <div class="activity-list">
+                            <div class="list-item"><div class="list-item-info"><strong>Taller: Ecuaciones cuadráticas</strong><small>Matemáticas (10°A)</small></div><div class="date-chip"><strong>22 ago.</strong><span class="badge-tag">Pendiente</span></div></div>
+                            <div class="list-item"><div class="list-item-info"><strong>Laboratorio: Reacciones químicas</strong><small>Química (11°B)</small></div><div class="date-chip"><strong>25 ago.</strong><span class="badge-tag">Pendiente</span></div></div>
+                            <div class="list-item"><div class="list-item-info"><strong>Quiz: Electricidad y Magnetismo</strong><small>Física (11°A)</small></div><div class="date-chip"><strong>26 ago.</strong><span class="badge-tag">Pendiente</span></div></div>
+                            <div class="list-item"><div class="list-item-info"><strong>Ensayo: Cuidado del ambiente</strong><small>Ciencias Naturales (10°B)</small></div><div class="date-chip"><strong>28 ago.</strong><span class="badge-tag">Pendiente</span></div></div>
+                            <div class="list-item"><div class="list-item-info"><strong>Presentación: Tecnología e innovación</strong><small>Tecnología (10°C)</small></div><div class="date-chip"><strong>30 ago.</strong><span class="badge-tag">Pendiente</span></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dash-grid">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h2>Mis últimas calificaciones</h2>
+                            <button class="btn-link" data-section="calificaciones">Ver todas</button>
+                        </div>
+                        <table class="data-table">
+                            <thead><tr><th>Actividad</th><th>Curso</th><th>Calificación</th><th>Fecha</th></tr></thead>
+                            <tbody>
+                                <tr><td>Taller: Funciones lineales</td><td>Matemáticas (10°A)</td><td><span class="badge-score">4.5</span></td><td>18/08/2026</td></tr>
+                                <tr><td>Quiz: Ondas y sonido</td><td>Física (11°A)</td><td><span class="badge-score">4.2</span></td><td>17/08/2026</td></tr>
+                                <tr><td>Laboratorio: Ácidos y Bases</td><td>Química (11°B)</td><td><span class="badge-score">4.8</span></td><td>16/08/2026</td></tr>
+                                <tr><td>Evaluación: Ecosistemas</td><td>Ciencias Naturales (10°B)</td><td><span class="badge-score">4.0</span></td><td>15/08/2026</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h2>Anuncios recientes</h2>
+                            <button class="btn-link" data-section="anuncios">Ver todos</button>
+                        </div>
+                        <div class="announcement-list">
+                            <div class="announcement-item"><span class="announcement-icon">📢</span><div><strong>Recordatorio: Entrega de proyecto de ciencias</strong><p>Publicado por Laura Sánchez · 18/08/2026</p></div></div>
+                            <div class="announcement-item"><span class="announcement-icon">📢</span><div><strong>Cambio de horario - Reunión de padres</strong><p>Publicado por Coordinación Académica · 17/08/2026</p></div></div>
+                            <div class="announcement-item"><span class="announcement-icon">📢</span><div><strong>Feria científica 2026</strong><p>Publicado por Coordinación Académica · 15/08/2026</p></div></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MIS CALIFICACIONES -->
+            <section class="panel" id="panel-calificaciones">
+                <header class="dash-header"><div><h1>Mis Calificaciones</h1><p>Consulta el detalle de tus calificaciones por curso.</p></div></header>
+                <div class="section-toolbar">
+                    <div class="search-box">🔍 <input type="text" placeholder="Buscar actividad..."></div>
+                    <select class="filter-select"><option>Todos los cursos</option><option>Matemáticas</option><option>Física</option><option>Química</option><option>Ciencias Naturales</option><option>Tecnología</option><option>Inglés</option></select>
+                </div>
+                <div class="dash-card">
+                    <table class="data-table">
+                        <thead><tr><th>Actividad</th><th>Curso</th><th>Calificación</th><th>Fecha</th></tr></thead>
+                        <tbody>
+                            <tr><td>Taller: Funciones lineales</td><td>Matemáticas (10°A)</td><td><span class="badge-score">4.5</span></td><td>18/08/2026</td></tr>
+                            <tr><td>Quiz: Ondas y sonido</td><td>Física (11°A)</td><td><span class="badge-score">4.2</span></td><td>17/08/2026</td></tr>
+                            <tr><td>Laboratorio: Ácidos y Bases</td><td>Química (11°B)</td><td><span class="badge-score">4.8</span></td><td>16/08/2026</td></tr>
+                            <tr><td>Evaluación: Ecosistemas</td><td>Ciencias Naturales (10°B)</td><td><span class="badge-score">4.0</span></td><td>15/08/2026</td></tr>
+                            <tr><td>Taller: Vocabulario</td><td>Inglés (10°A)</td><td><span class="badge-score">4.6</span></td><td>14/08/2026</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- MIS CURSOS -->
+            <section class="panel" id="panel-cursos">
+                <header class="dash-header"><div><h1>Mis Cursos</h1><p>Cursos en los que estás inscrito este período.</p></div></header>
+                <div class="card-grid">
+                    <div class="course-card"><span class="course-tag">10°A</span><h3>Matemáticas</h3><p>Docente: Carlos Andrés Mejía</p><div class="course-meta"><span>Promedio: 4.3</span><span>Progreso: 85%</span></div></div>
+                    <div class="course-card"><span class="course-tag">10°B</span><h3>Ciencias Naturales</h3><p>Docente: Laura Sánchez</p><div class="course-meta"><span>Promedio: 4.1</span><span>Progreso: 78%</span></div></div>
+                    <div class="course-card"><span class="course-tag">11°A</span><h3>Física</h3><p>Docente: Jorge Luis Ramírez</p><div class="course-meta"><span>Promedio: 4.4</span><span>Progreso: 90%</span></div></div>
+                    <div class="course-card"><span class="course-tag">11°B</span><h3>Química</h3><p>Docente: María Fernanda Ortiz</p><div class="course-meta"><span>Promedio: 4.2</span><span>Progreso: 82%</span></div></div>
+                    <div class="course-card"><span class="course-tag">10°C</span><h3>Tecnología</h3><p>Docente: Andrés Felipe López</p><div class="course-meta"><span>Promedio: 4.0</span><span>Progreso: 75%</span></div></div>
+                    <div class="course-card"><span class="course-tag">10°A</span><h3>Inglés</h3><p>Docente: Diana Marcela Rojas</p><div class="course-meta"><span>Promedio: 4.5</span><span>Progreso: 88%</span></div></div>
+                </div>
+            </section>
+
+            <!-- ACTIVIDADES -->
+            <section class="panel" id="panel-actividades">
+                <header class="dash-header"><div><h1>Actividades</h1><p>Revisa tus tareas, talleres y proyectos por entregar.</p></div></header>
+                <div class="simple-list">
+                    <div class="list-item"><div class="list-item-info"><strong>Taller: Ecuaciones cuadráticas</strong><small>Matemáticas (10°A) · Entrega: 22 ago.</small></div><span class="badge-tag">Pendiente</span></div>
+                    <div class="list-item"><div class="list-item-info"><strong>Laboratorio: Reacciones químicas</strong><small>Química (11°B) · Entrega: 25 ago.</small></div><span class="badge-tag">Pendiente</span></div>
+                    <div class="list-item"><div class="list-item-info"><strong>Quiz: Electricidad y Magnetismo</strong><small>Física (11°A) · Entrega: 26 ago.</small></div><span class="badge-tag">Pendiente</span></div>
+                    <div class="list-item"><div class="list-item-info"><strong>Ensayo: Cuidado del ambiente</strong><small>Ciencias Naturales (10°B) · Entrega: 28 ago.</small></div><span class="badge-tag">Pendiente</span></div>
+                    <div class="list-item"><div class="list-item-info"><strong>Taller: Funciones lineales</strong><small>Matemáticas (10°A) · Entregado</small></div><span class="badge-tag green">Calificado</span></div>
+                </div>
+            </section>
+
+            <!-- CALENDARIO -->
+            <section class="panel" id="panel-calendario">
+                <header class="dash-header"><div><h1>Calendario</h1><p>Próximas fechas importantes de tus cursos.</p></div></header>
+                <div class="calendar-list">
+                    <div class="calendar-item"><div class="calendar-day">22<span>AGO</span></div><div class="calendar-info"><strong>Taller: Ecuaciones cuadráticas</strong><small>Matemáticas (10°A)</small></div></div>
+                    <div class="calendar-item"><div class="calendar-day">25<span>AGO</span></div><div class="calendar-info"><strong>Laboratorio: Reacciones químicas</strong><small>Química (11°B)</small></div></div>
+                    <div class="calendar-item"><div class="calendar-day">26<span>AGO</span></div><div class="calendar-info"><strong>Quiz: Electricidad y Magnetismo</strong><small>Física (11°A)</small></div></div>
+                    <div class="calendar-item"><div class="calendar-day">28<span>AGO</span></div><div class="calendar-info"><strong>Ensayo: Cuidado del ambiente</strong><small>Ciencias Naturales (10°B)</small></div></div>
+                    <div class="calendar-item"><div class="calendar-day">30<span>AGO</span></div><div class="calendar-info"><strong>Presentación: Tecnología e innovación</strong><small>Tecnología (10°C)</small></div></div>
+                </div>
+            </section>
+
+            <!-- ANUNCIOS -->
+            <section class="panel" id="panel-anuncios">
+                <header class="dash-header"><div><h1>Anuncios</h1><p>Comunicados de tus docentes y coordinación académica.</p></div></header>
+                <div class="announcement-list">
+                    <div class="announcement-item"><span class="announcement-icon">📢</span><div><strong>Recordatorio: Entrega de proyecto de ciencias</strong><p>Publicado por Laura Sánchez · 18/08/2026</p></div></div>
+                    <div class="announcement-item"><span class="announcement-icon">📢</span><div><strong>Cambio de horario - Reunión de padres</strong><p>Publicado por Coordinación Académica · 17/08/2026</p></div></div>
+                    <div class="announcement-item"><span class="announcement-icon">📢</span><div><strong>Feria científica 2026</strong><p>Publicado por Coordinación Académica · 15/08/2026</p></div></div>
+                </div>
+            </section>
+
+            <!-- RECURSOS -->
+            <section class="panel" id="panel-recursos">
+                <header class="dash-header"><div><h1>Recursos</h1><p>Material de apoyo compartido por tus docentes.</p></div></header>
+                <div class="resource-list">
+                    <div class="resource-item"><span class="resource-icon">📄</span><div><strong>Guía: Ecuaciones cuadráticas</strong><p>Matemáticas (10°A) · PDF</p></div></div>
+                    <div class="resource-item"><span class="resource-icon">📄</span><div><strong>Presentación: Tabla periódica</strong><p>Química (11°B) · Diapositivas</p></div></div>
+                    <div class="resource-item"><span class="resource-icon">📄</span><div><strong>Video: Leyes de Newton</strong><p>Física (11°A) · Enlace</p></div></div>
+                </div>
+            </section>
+
+            <!-- PERFIL -->
+            <section class="panel" id="panel-perfil">
+                <header class="dash-header"><div><h1>Mi Perfil</h1><p>Información de tu cuenta estudiantil.</p></div></header>
+                <div class="profile-card">
+                    <div class="profile-avatar" id="profileAvatar">E</div>
+                    <div class="profile-details">
+                        <h2 id="profileName">Estudiante</h2>
+                        <p id="profileEmail">estudiante@institucion.edu.co</p>
+                        <p>Institución Educativa Inocencio Chincá · Tame, Arauca</p>
+                        <p>Rol: Estudiante</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-school">
+            <div class="shield" aria-hidden="true">✦</div>
+            <div><strong>Institución Educativa Inocencio Chincá</strong>Tame, Arauca</div>
+        </div>
+        <span>© <span id="footerYear">2026</span> Organizador de Notas</span>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="menuestudiantes.js"></script>
+</body>
+</html>
