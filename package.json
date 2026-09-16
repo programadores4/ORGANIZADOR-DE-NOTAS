@@ -1,0 +1,15 @@
+{
+  "name": "organizador-de-notas",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Aplicación web para el registro y consulta de calificaciones escolares de la I.E. Inocencio Chincá",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "node -e \"console.log('Build complete')\""
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

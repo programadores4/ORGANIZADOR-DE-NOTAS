@@ -1,0 +1,8 @@
+{
+  "name": "Organizador de Notas",
+  "description": "Aplicación web para el registro y consulta automatizada de calificaciones escolares en tiempo real de la I.E. Inocencio Chincá",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
