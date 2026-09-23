@@ -60,7 +60,8 @@
                 <p class="sidebar-label">ACADÉMICO</p>
                 <ul class="sidebar-menu">
                     <li class="sidebar-item"><a href="#" data-section="calificaciones"><span class="sidebar-icon">☑️</span> Mis Calificaciones</a></li>
-                    <li class="sidebar-item"><a href="#" data-section="cursos"><span class="sidebar-icon">📚</span> Mis Cursos</a></li>
+                    <li class="sidebar-item"><a href="#" data-section="areas"><span class="sidebar-icon">📚</span> Mis Áreas</a></li>
+                    <li class="sidebar-item"><a href="#" data-section="reportes"><span class="sidebar-icon">📑</span> Mis Reportes</a></li>
                     <li class="sidebar-item"><a href="#" data-section="actividades"><span class="sidebar-icon">📋</span> Actividades</a></li>
                     <li class="sidebar-item"><a href="#" data-section="calendario"><span class="sidebar-icon">📅</span> Calendario</a></li>
                 </ul>
@@ -96,15 +97,15 @@
                 <div class="metrics-grid">
                     <div class="metric-card">
                         <div class="metric-icon purple">📖</div>
-                        <div class="metric-info"><h3>6</h3><p>Cursos inscritos</p></div>
+                        <div class="metric-info"><h3 id="metricCursosEst">8</h3><p>Áreas de mi grado</p></div>
                     </div>
                     <div class="metric-card">
                         <div class="metric-icon green">📊</div>
-                        <div class="metric-info"><h3>4.2</h3><p>Tu promedio actual</p></div>
+                        <div class="metric-info"><h3 id="metricPromedioEst">4.3</h3><p>Tu promedio actual</p></div>
                     </div>
                     <div class="metric-card">
                         <div class="metric-icon amber">⭐</div>
-                        <div class="metric-info"><h3>8</h3><p>Actividades pendientes</p></div>
+                        <div class="metric-info"><h3 id="metricPendientesEst">5</h3><p>Actividades pendientes</p></div>
                     </div>
                     <div class="metric-card">
                         <div class="metric-icon blue">🏅</div>
@@ -115,18 +116,13 @@
                 <div class="dash-grid">
                     <div class="dash-card">
                         <div class="dash-card-header">
-                            <h2>Mis Cursos</h2>
-                            <button class="btn-link" data-section="cursos">Ver todos</button>
+                            <h2>Mis Áreas Académicas</h2>
+                            <button class="btn-link" data-section="areas">Ver todas</button>
                         </div>
                         <table class="data-table">
-                            <thead><tr><th>Curso</th><th>Docente</th><th>Promedio</th><th>Progreso</th></tr></thead>
-                            <tbody>
+                            <thead><tr><th>Área / Asignatura</th><th>Docente Encargado</th><th>Promedio</th><th>Progreso</th></tr></thead>
+                            <tbody id="dashCursosEstTbody">
                                 <tr><td><strong>Matemáticas (10°A)</strong></td><td>Carlos Andrés Mejía</td><td><span class="badge-score">4.3</span></td><td class="progress-cell"><span class="progress-track"><span class="progress-fill" style="width:85%"></span></span><span>85%</span></td></tr>
-                                <tr><td><strong>Ciencias Naturales (10°B)</strong></td><td>Laura Sánchez</td><td><span class="badge-score">4.1</span></td><td class="progress-cell"><span class="progress-track"><span class="progress-fill" style="width:78%"></span></span><span>78%</span></td></tr>
-                                <tr><td><strong>Física (11°A)</strong></td><td>Jorge Luis Ramírez</td><td><span class="badge-score">4.4</span></td><td class="progress-cell"><span class="progress-track"><span class="progress-fill" style="width:90%"></span></span><span>90%</span></td></tr>
-                                <tr><td><strong>Química (11°B)</strong></td><td>María Fernanda Ortiz</td><td><span class="badge-score">4.2</span></td><td class="progress-cell"><span class="progress-track"><span class="progress-fill" style="width:82%"></span></span><span>82%</span></td></tr>
-                                <tr><td><strong>Tecnología (10°C)</strong></td><td>Andrés Felipe López</td><td><span class="badge-score">4.0</span></td><td class="progress-cell"><span class="progress-track"><span class="progress-fill" style="width:75%"></span></span><span>75%</span></td></tr>
-                                <tr><td><strong>Inglés (10°A)</strong></td><td>Diana Marcela Rojas</td><td><span class="badge-score">4.5</span></td><td class="progress-cell"><span class="progress-track"><span class="progress-fill" style="width:88%"></span></span><span>88%</span></td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -136,12 +132,7 @@
                             <h2>Próximas actividades</h2>
                             <button class="btn-link" data-section="actividades">Ver todas</button>
                         </div>
-                        <div class="activity-list">
-                            <div class="list-item"><div class="list-item-info"><strong>Taller: Ecuaciones cuadráticas</strong><small>Matemáticas (10°A)</small></div><div class="date-chip"><strong>22 ago.</strong><span class="badge-tag">Pendiente</span></div></div>
-                            <div class="list-item"><div class="list-item-info"><strong>Laboratorio: Reacciones químicas</strong><small>Química (11°B)</small></div><div class="date-chip"><strong>25 ago.</strong><span class="badge-tag">Pendiente</span></div></div>
-                            <div class="list-item"><div class="list-item-info"><strong>Quiz: Electricidad y Magnetismo</strong><small>Física (11°A)</small></div><div class="date-chip"><strong>26 ago.</strong><span class="badge-tag">Pendiente</span></div></div>
-                            <div class="list-item"><div class="list-item-info"><strong>Ensayo: Cuidado del ambiente</strong><small>Ciencias Naturales (10°B)</small></div><div class="date-chip"><strong>28 ago.</strong><span class="badge-tag">Pendiente</span></div></div>
-                            <div class="list-item"><div class="list-item-info"><strong>Presentación: Tecnología e innovación</strong><small>Tecnología (10°C)</small></div><div class="date-chip"><strong>30 ago.</strong><span class="badge-tag">Pendiente</span></div></div>
+                        <div class="activity-list" id="dashActividadesEstList">
                         </div>
                     </div>
                 </div>
@@ -154,11 +145,7 @@
                         </div>
                         <table class="data-table">
                             <thead><tr><th>Actividad</th><th>Curso</th><th>Calificación</th><th>Fecha</th></tr></thead>
-                            <tbody>
-                                <tr><td>Taller: Funciones lineales</td><td>Matemáticas (10°A)</td><td><span class="badge-score">4.5</span></td><td>18/08/2026</td></tr>
-                                <tr><td>Quiz: Ondas y sonido</td><td>Física (11°A)</td><td><span class="badge-score">4.2</span></td><td>17/08/2026</td></tr>
-                                <tr><td>Laboratorio: Ácidos y Bases</td><td>Química (11°B)</td><td><span class="badge-score">4.8</span></td><td>16/08/2026</td></tr>
-                                <tr><td>Evaluación: Ecosistemas</td><td>Ciencias Naturales (10°B)</td><td><span class="badge-score">4.0</span></td><td>15/08/2026</td></tr>
+                            <tbody id="dashCalificacionesEstTbody">
                             </tbody>
                         </table>
                     </div>
@@ -179,47 +166,36 @@
 
             <!-- MIS CALIFICACIONES -->
             <section class="panel" id="panel-calificaciones">
-                <header class="dash-header"><div><h1>Mis Calificaciones</h1><p>Consulta el detalle de tus calificaciones por curso.</p></div></header>
+                <header class="dash-header"><div><h1>Mis Calificaciones</h1><p>Consulta el detalle de tus calificaciones por área y asignatura.</p></div></header>
                 <div class="section-toolbar">
-                    <div class="search-box">🔍 <input type="text" placeholder="Buscar actividad..."></div>
-                    <select class="filter-select"><option>Todos los cursos</option><option>Matemáticas</option><option>Física</option><option>Química</option><option>Ciencias Naturales</option><option>Tecnología</option><option>Inglés</option></select>
+                    <div class="search-box">🔍 <input type="text" id="searchCalEst" placeholder="Buscar actividad..."></div>
+                    <select class="filter-select" id="filterCursoEst"><option value="">Todas las áreas</option></select>
                 </div>
                 <div class="dash-card">
                     <table class="data-table">
-                        <thead><tr><th>Actividad</th><th>Curso</th><th>Calificación</th><th>Fecha</th></tr></thead>
-                        <tbody>
-                            <tr><td>Taller: Funciones lineales</td><td>Matemáticas (10°A)</td><td><span class="badge-score">4.5</span></td><td>18/08/2026</td></tr>
-                            <tr><td>Quiz: Ondas y sonido</td><td>Física (11°A)</td><td><span class="badge-score">4.2</span></td><td>17/08/2026</td></tr>
-                            <tr><td>Laboratorio: Ácidos y Bases</td><td>Química (11°B)</td><td><span class="badge-score">4.8</span></td><td>16/08/2026</td></tr>
-                            <tr><td>Evaluación: Ecosistemas</td><td>Ciencias Naturales (10°B)</td><td><span class="badge-score">4.0</span></td><td>15/08/2026</td></tr>
-                            <tr><td>Taller: Vocabulario</td><td>Inglés (10°A)</td><td><span class="badge-score">4.6</span></td><td>14/08/2026</td></tr>
+                        <thead><tr><th>Actividad</th><th>Área / Asignatura</th><th>Calificación</th><th>Fecha</th></tr></thead>
+                        <tbody id="calificacionesEstTbody">
                         </tbody>
                     </table>
                 </div>
             </section>
 
-            <!-- MIS CURSOS -->
-            <section class="panel" id="panel-cursos">
-                <header class="dash-header"><div><h1>Mis Cursos</h1><p>Cursos en los que estás inscrito este período.</p></div></header>
-                <div class="card-grid">
-                    <div class="course-card"><span class="course-tag">10°A</span><h3>Matemáticas</h3><p>Docente: Carlos Andrés Mejía</p><div class="course-meta"><span>Promedio: 4.3</span><span>Progreso: 85%</span></div></div>
-                    <div class="course-card"><span class="course-tag">10°B</span><h3>Ciencias Naturales</h3><p>Docente: Laura Sánchez</p><div class="course-meta"><span>Promedio: 4.1</span><span>Progreso: 78%</span></div></div>
-                    <div class="course-card"><span class="course-tag">11°A</span><h3>Física</h3><p>Docente: Jorge Luis Ramírez</p><div class="course-meta"><span>Promedio: 4.4</span><span>Progreso: 90%</span></div></div>
-                    <div class="course-card"><span class="course-tag">11°B</span><h3>Química</h3><p>Docente: María Fernanda Ortiz</p><div class="course-meta"><span>Promedio: 4.2</span><span>Progreso: 82%</span></div></div>
-                    <div class="course-card"><span class="course-tag">10°C</span><h3>Tecnología</h3><p>Docente: Andrés Felipe López</p><div class="course-meta"><span>Promedio: 4.0</span><span>Progreso: 75%</span></div></div>
-                    <div class="course-card"><span class="course-tag">10°A</span><h3>Inglés</h3><p>Docente: Diana Marcela Rojas</p><div class="course-meta"><span>Promedio: 4.5</span><span>Progreso: 88%</span></div></div>
+            <!-- MIS ÁREAS SEGÚN EL GRADO -->
+            <section class="panel" id="panel-areas">
+                <header class="dash-header">
+                    <div>
+                        <h1>Mis Áreas</h1>
+                        <p>Plan de estudios y asignaturas correspondientes a tu grado escolar (<span id="areasGradoBadge">10°A</span>) con su docente asignado.</p>
+                    </div>
+                </header>
+                <div class="card-grid" id="areasEstGrid">
                 </div>
             </section>
 
             <!-- ACTIVIDADES -->
             <section class="panel" id="panel-actividades">
                 <header class="dash-header"><div><h1>Actividades</h1><p>Revisa tus tareas, talleres y proyectos por entregar.</p></div></header>
-                <div class="simple-list">
-                    <div class="list-item"><div class="list-item-info"><strong>Taller: Ecuaciones cuadráticas</strong><small>Matemáticas (10°A) · Entrega: 22 ago.</small></div><span class="badge-tag">Pendiente</span></div>
-                    <div class="list-item"><div class="list-item-info"><strong>Laboratorio: Reacciones químicas</strong><small>Química (11°B) · Entrega: 25 ago.</small></div><span class="badge-tag">Pendiente</span></div>
-                    <div class="list-item"><div class="list-item-info"><strong>Quiz: Electricidad y Magnetismo</strong><small>Física (11°A) · Entrega: 26 ago.</small></div><span class="badge-tag">Pendiente</span></div>
-                    <div class="list-item"><div class="list-item-info"><strong>Ensayo: Cuidado del ambiente</strong><small>Ciencias Naturales (10°B) · Entrega: 28 ago.</small></div><span class="badge-tag">Pendiente</span></div>
-                    <div class="list-item"><div class="list-item-info"><strong>Taller: Funciones lineales</strong><small>Matemáticas (10°A) · Entregado</small></div><span class="badge-tag green">Calificado</span></div>
+                <div class="simple-list" id="actividadesEstList">
                 </div>
             </section>
 
@@ -255,6 +231,24 @@
                 </div>
             </section>
 
+            <!-- MIS REPORTES -->
+            <section class="panel" id="panel-reportes">
+                <header class="dash-header">
+                    <div>
+                        <h1>Mis Reportes y Observaciones Pedagógicas</h1>
+                        <p>Informes individuales de desempeño y recomendaciones formativas emitidas por tus docentes.</p>
+                    </div>
+                </header>
+                <div class="reportes-card-grid" id="misReportesGrid">
+                    <!-- Se llena dinámicamente -->
+                </div>
+                <div class="empty-state-card" id="emptyMisReportes" style="display:none;">
+                    <span class="empty-icon">📑</span>
+                    <h3>No tienes reportes individuales registrados todavía</h3>
+                    <p>Tus docentes publicarán aquí observaciones cualitativas sobre tu proceso de aprendizaje.</p>
+                </div>
+            </section>
+
             <!-- PERFIL -->
             <section class="panel" id="panel-perfil">
                 <header class="dash-header"><div><h1>Mi Perfil</h1><p>Información de tu cuenta estudiantil.</p></div></header>
@@ -263,6 +257,7 @@
                     <div class="profile-details">
                         <h2 id="profileName">Estudiante</h2>
                         <p id="profileEmail">estudiante@institucion.edu.co</p>
+                        <p><strong>Grado Escolar:</strong> <span id="profileGrado">10°A</span></p>
                         <p>Institución Educativa Inocencio Chincá · Tame, Arauca</p>
                         <p>Rol: Estudiante</p>
                     </div>
@@ -279,6 +274,23 @@
         </div>
         <span>© <span id="footerYear">2026</span> Organizador de Notas</span>
     </footer>
+
+    <!-- MODAL VER REPORTE ESTUDIANTE -->
+    <div class="modal-overlay" id="modalVerReporteEst">
+        <div class="modal-card modal-card-lg">
+            <div class="modal-header">
+                <h2>📄 Mi Reporte Pedagógico</h2>
+                <button class="modal-close" data-close-modal="modalVerReporteEst">&times;</button>
+            </div>
+            <div class="modal-body" id="verReporteEstContent">
+                <!-- Dinámico -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" data-close-modal="modalVerReporteEst">Cerrar</button>
+                <button type="button" class="primary-btn" id="btnPrintReporteEst">🖨️ Imprimir Reporte</button>
+            </div>
+        </div>
+    </div>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 

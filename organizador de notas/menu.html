@@ -161,6 +161,16 @@
                         <p>Ingresa tus credenciales para acceder al sistema</p>
                     </div>
 
+                    <!-- Pestañas para alternar entre Docente y Estudiante directamente en el Login -->
+                    <div class="role-switcher-tabs" id="roleSwitcherTabs">
+                        <button type="button" class="role-tab active" id="tabDocente" data-set-role="docente">
+                            <span>👨‍🏫</span> Modo Docente
+                        </button>
+                        <button type="button" class="role-tab" id="tabEstudiante" data-set-role="estudiante">
+                            <span>🎓</span> Modo Estudiante
+                        </button>
+                    </div>
+
                     <form id="loginForm" novalidate>
                         <label for="email">Correo <span id="emailLabel">electrónico</span></label>
                         <div class="input-wrap">
@@ -217,7 +227,7 @@
                         <button type="button" id="createAccount">Crear cuenta</button>
                     </div>
 
-                    <p class="demo-note">Modo demostración: esta interfaz funciona sin servidor.</p>
+                    <p class="demo-note" id="dbNote">⚡ Conectado con soporte para <strong>Supabase</strong> (PostgreSQL). Acceso: <strong>docente@institucion.edu.co</strong> o <strong>maria.perez@estudiante.edu.co</strong> (clave: <strong>123456</strong>)</p>
                 </div>
             </div>
         </section>

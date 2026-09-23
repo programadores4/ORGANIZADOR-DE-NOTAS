@@ -69,6 +69,12 @@ document.addEventListener("DOMContentLoaded", function () {
         if (sideRoleText) sideRoleText.textContent = roleLabel;
         if (formRoleText) formRoleText.textContent = roleLabel;
         if (emailLabel) emailLabel.textContent = isStudent ? "estudiantil" : "institucional";
+
+        // Actualizar pestañas del selector de rol en el login
+        const tabDoc = document.getElementById("tabDocente");
+        const tabEst = document.getElementById("tabEstudiante");
+        if (tabDoc) tabDoc.classList.toggle("active", role === "docente");
+        if (tabEst) tabEst.classList.toggle("active", role === "estudiante");
     }
 
     function deriveName(email) {
@@ -152,6 +158,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    // Pestañas de cambio directo de rol dentro de la tarjeta de login
+    document.querySelectorAll("[data-set-role]").forEach(tab => {
+        tab.addEventListener("click", function () {
+            setRoleMode(this.dataset.setRole);
+        });
+    });
+
     // ---------- Volver al inicio desde el login ----------
     if (backHomeBtn) {
         backHomeBtn.addEventListener("click", function (e) {
@@ -188,36 +201,103 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ---------- Envío del formulario de login ----------
+    // Comprobar estado de conexión con Supabase
+    const dbNote = document.getElementById("dbNote");
+    fetch("/api/supabase/status")
+        .then(res => res.json())
+        .then(data => {
+            if (dbNote && data.configured && data.connected) {
+                dbNote.innerHTML = `🟢 <strong>Supabase Conectado</strong> (${data.backend}). Acceso: <strong>docente@institucion.edu.co</strong> o <strong>maria.perez@estudiante.edu.co</strong> (clave: <strong>123456</strong>)`;
+            } else if (dbNote && data.configured && !data.connected) {
+                dbNote.innerHTML = `🟡 <strong>Supabase detectado en .env</strong>. Recuerda ejecutar <code>supabase_schema.sql</code> en el SQL Editor de Supabase.`;
+            }
+        })
+        .catch(() => {});
+
+    // ---------- Envío del formulario de login (con Supabase API) ----------
     if (loginForm) {
-        loginForm.addEventListener("submit", function (e) {
+        loginForm.addEventListener("submit", async function (e) {
             e.preventDefault();
 
             if (!validateForm()) return;
 
+            const emailVal = emailInput.value.trim();
+            const passwordVal = passwordInput.value;
+            const submitBtn = document.getElementById("submitLogin");
+
             if (rememberCheckbox && rememberCheckbox.checked) {
-                localStorage.setItem("organizadorNotasEmail", emailInput.value.trim());
+                localStorage.setItem("organizadorNotasEmail", emailVal);
             } else {
                 localStorage.removeItem("organizadorNotasEmail");
             }
 
-            // Guarda la sesión para personalizar el panel correspondiente
-            const session = {
-                role: currentRole,
-                email: emailInput.value.trim(),
-                name: deriveName(emailInput.value.trim()),
-                loginAt: Date.now()
-            };
-            localStorage.setItem("organizadorNotasSesion", JSON.stringify(session));
-
-            const submitBtn = document.getElementById("submitLogin");
             if (submitBtn) submitBtn.disabled = true;
+            showToast("Verificando credenciales en base de datos...");
 
-            showToast(`Iniciando sesión como ${currentRole === "docente" ? "DOCENTE" : "ESTUDIANTE"}...`);
+            try {
+                const response = await fetch("/api/auth/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        email: emailVal,
+                        password: passwordVal,
+                        role: currentRole
+                    })
+                });
 
-            setTimeout(() => {
-                window.location.href = currentRole === "docente" ? "menudocentes.html" : "menuestudiantes.html";
-            }, 1100);
+                const data = await response.json();
+
+                if (data.success && data.user) {
+                    const userRole = (data.user.role || data.user.rol || currentRole || "").toLowerCase();
+                    const userName = data.user.name || data.user.nombre || deriveName(emailVal);
+                    const userGrade = data.user.grade || data.user.grado || null;
+
+                    const session = {
+                        id: data.user.id,
+                        role: userRole,
+                        rol: userRole,
+                        email: data.user.email,
+                        name: userName,
+                        nombre: userName,
+                        grado: userGrade,
+                        grade: userGrade,
+                        loginAt: Date.now()
+                    };
+                    localStorage.setItem("organizadorNotasSesion", JSON.stringify(session));
+                    showToast(`¡Bienvenido/a, ${userName}!`);
+
+                    const isDocente = userRole === "docente";
+                    const targetPage = isDocente ? "menudocentes.html" : "menuestudiantes.html";
+
+                    setTimeout(() => {
+                        window.location.href = targetPage;
+                    }, 600);
+                    return;
+                } else {
+                    showToast("⚠️ " + (data.message || "Credenciales incorrectas"));
+                    if (submitBtn) submitBtn.disabled = false;
+                }
+            } catch (err) {
+                // Modo resiliente si el servidor no responde
+                console.warn("Fallo de conexión con la API, usando sesión local:", err);
+                const userRole = currentRole.toLowerCase();
+                const userName = deriveName(emailVal);
+                const session = {
+                    role: userRole,
+                    rol: userRole,
+                    email: emailVal,
+                    name: userName,
+                    nombre: userName,
+                    loginAt: Date.now()
+                };
+                localStorage.setItem("organizadorNotasSesion", JSON.stringify(session));
+                showToast(`Iniciando sesión como ${userRole.toUpperCase()}...`);
+
+                const targetPage = userRole === "docente" ? "menudocentes.html" : "menuestudiantes.html";
+                setTimeout(() => {
+                    window.location.href = targetPage;
+                }, 600);
+            }
         });
     }
 

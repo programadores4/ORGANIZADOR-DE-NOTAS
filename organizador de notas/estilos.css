@@ -674,7 +674,43 @@ a {
 .login-heading p {
     color: #69717e;
     font-size: 16px;
-    margin-bottom: 37px;
+    margin-bottom: 22px;
+}
+
+.role-switcher-tabs {
+    display: flex;
+    background: #eef2f7;
+    padding: 4px;
+    border-radius: 10px;
+    margin-bottom: 24px;
+    gap: 6px;
+}
+
+.role-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #4b5563;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.role-tab.active {
+    background: white;
+    color: var(--blue);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.student-form .role-tab.active {
+    color: var(--green-dark);
 }
 
 #loginForm label:not(.remember) {
