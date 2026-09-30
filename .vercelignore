@@ -1,0 +1,9 @@
+.env
+.env.local
+.git
+.github
+node_modules
+bun.lock
+*.log
+README_SUPABASE.md
+VERCEL_DEPLOYMENT.md

@@ -4,13 +4,15 @@ const supabaseService = require('./supabase');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const publicDir = path.join(__dirname, 'public');
 const staticDir = path.join(__dirname, 'organizador de notas');
 
 // Middlewares
 app.use(express.json({ limit: '25mb' }));
 app.use(express.urlencoded({ extended: true, limit: '25mb' }));
 
-// Serve static assets from 'organizador de notas' at the root
+// Serve static assets (soporte para Vercel public y carpeta original)
+app.use(express.static(publicDir, { extensions: ['html', 'htm'] }));
 app.use(express.static(staticDir, { extensions: ['html', 'htm'] }));
 app.use('/organizador de notas', express.static(staticDir, { extensions: ['html', 'htm'] }));
 
@@ -319,8 +321,12 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(staticDir, 'menu.html'));
 });
 
-// Iniciar servidor
-app.listen(PORT, () => {
-  console.log(`⚡ Servidor Organizador de Notas corriendo en el puerto ${PORT}`);
-  console.log(`📁 Directorio estático: ${staticDir}`);
-});
+// Iniciar servidor solo si se ejecuta directamente (no en entorno serverless como Vercel)
+if (require.main === module || !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`⚡ Servidor Organizador de Notas corriendo en el puerto ${PORT}`);
+    console.log(`📁 Directorio estático: ${staticDir}`);
+  });
+}
+
+module.exports = app;

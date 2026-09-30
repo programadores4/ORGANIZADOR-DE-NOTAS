@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma Académica - Panel Docente</title>
+    <link rel="stylesheet" href="menudocentes.css">
+</head>
+<body>
+    <header class="navbar">
+        <a href="menu.html" class="nav-brand" aria-label="Organizador de Notas">
+            <span class="nav-logo" aria-hidden="true">📖</span>
+            <div class="nav-titles">
+                <strong>Organizador de Notas</strong>
+                <small>I.E. INOCENCIO CHINCÁ</small>
+            </div>
+        </a>
+
+        <div class="nav-actions">
+            <div class="user-menu" id="notifMenu">
+                <button class="icon-btn" id="notifBtn" aria-label="Notificaciones" aria-haspopup="true">
+                    🔔
+                    <span class="icon-badge" id="notifBadge">3</span>
+                </button>
+                <div class="dropdown-panel notif-panel" id="notifPanel">
+                    <div class="notif-item">
+                        <strong>12 actividades pendientes por calificar</strong>
+                        <span>Taller de ecuaciones cuadráticas · 10°A</span>
+                    </div>
+                    <div class="notif-item">
+                        <strong>Reunión de área - Ciencias</strong>
+                        <span>Hoy · 3:00 p. m.</span>
+                    </div>
+                    <div class="notif-item">
+                        <strong>Nuevo mensaje de coordinación</strong>
+                        <span>Recordatorio de entrega de planillas</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="user-menu" id="userMenu">
+                <button class="user-trigger" id="userTrigger" aria-haspopup="true">
+                    <span class="user-avatar" id="userAvatar">D</span>
+                    <span class="user-name" id="navUserName">Docente</span>
+                    <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="dropdown-panel" id="userPanel">
+                    <a href="#" data-section="perfil">👤 Mi perfil</a>
+                    <div class="dropdown-divider"></div>
+                    <button type="button" id="logoutBtn">🚪 Cerrar sesión</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-group">
+                <ul class="sidebar-menu">
+                    <li class="sidebar-item active"><a href="#" data-section="inicio"><span class="sidebar-icon">🏠</span> Inicio</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-group">
+                <p class="sidebar-label">GESTIÓN</p>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-item"><a href="#" data-section="cursos"><span class="sidebar-icon">📚</span> Mis Cursos</a></li>
+                    <li class="sidebar-item"><a href="#" data-section="estudiantes"><span class="sidebar-icon">👥</span> Estudiantes</a></li>
+                    <li class="sidebar-item"><a href="#" data-section="calificaciones"><span class="sidebar-icon">☑️</span> Calificaciones</a></li>
+                    <li class="sidebar-item"><a href="#" data-section="actividades"><span class="sidebar-icon">📋</span> Actividades</a></li>
+                    <li class="sidebar-item"><a href="#" data-section="reportes"><span class="sidebar-icon">📊</span> Reportes</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-group">
+                <p class="sidebar-label">CONFIGURACIÓN</p>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-item"><a href="#" data-section="perfil"><span class="sidebar-icon">👤</span> Perfil</a></li>
+                    <li class="sidebar-item"><a href="#" id="logoutBtnSidebar"><span class="sidebar-icon">🚪</span> Cerrar sesión</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <main class="dashboard-content">
+
+            <!-- INICIO -->
+            <section class="panel active-panel" id="panel-inicio">
+                <header class="dash-header">
+                    <div>
+                        <h1>Bienvenido, <span id="welcomeName">Docente</span> 👋</h1>
+                        <p>Aquí puedes gestionar tus cursos, estudiantes y calificaciones.</p>
+                    </div>
+                    <div class="date-badge">📅 <strong>Fecha:</strong> <span id="todayDate">27 de agosto de 2026</span></div>
+                </header>
+
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon blue">📘</div>
+                        <div class="metric-info"><h3 id="metricCursos">5</h3><p>Cursos activos</p></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon green">👥</div>
+                        <div class="metric-info"><h3 id="metricEstudiantes">8</h3><p>Estudiantes registrados</p></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon amber">📝</div>
+                        <div class="metric-info"><h3 id="metricPendientes">4</h3><p>Pendientes por evaluar</p></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon purple">📈</div>
+                        <div class="metric-info"><h3 id="metricPromedio">4.3</h3><p>Promedio de cursos</p></div>
+                    </div>
+                </div>
+
+                <div class="dash-grid">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h2>Mis Cursos</h2>
+                            <button class="btn-link" data-section="cursos">Ver todos</button>
+                        </div>
+                        <table class="data-table">
+                            <thead><tr><th>Curso</th><th>Grado</th><th>Estudiantes</th><th>Promedio</th></tr></thead>
+                            <tbody id="dashCursosTableBody">
+                                <tr><td><strong>Matemáticas</strong></td><td>10°A</td><td>28</td><td><span class="badge-score">4.3</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h2>Actividades pendientes</h2>
+                            <button class="btn-link" data-section="actividades">Ver todas</button>
+                        </div>
+                        <div class="activity-list" id="dashActividadesList">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dash-grid">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h2>Últimas calificaciones registradas</h2>
+                            <button class="btn-link" data-section="calificaciones">Ver todas</button>
+                        </div>
+                        <table class="data-table">
+                            <thead><tr><th>Estudiante</th><th>Curso</th><th>Actividad</th><th>Calificación</th><th>Fecha</th></tr></thead>
+                            <tbody id="dashCalificacionesTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="dash-card-header"><h2>Accesos rápidos</h2></div>
+                        <div class="quick-actions">
+                            <a href="#" class="quick-action" id="qaCrearActividad"><span class="quick-icon" style="background:var(--blue-soft);color:var(--blue);">➕</span> Crear actividad</a>
+                            <a href="#" class="quick-action" id="qaRegistrarCal"><span class="quick-icon" style="background:var(--green-soft);color:var(--green-dark);">✏️</span> Registrar calificación</a>
+                            <a href="#" class="quick-action" id="qaNuevoEstudiante"><span class="quick-icon" style="background:var(--green-soft);color:var(--green-dark);">👤</span> Nuevo estudiante</a>
+                            <a href="#" class="quick-action" data-section="cursos"><span class="quick-icon" style="background:var(--amber-soft);color:var(--amber);">🎓</span> Ver mis cursos</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MIS CURSOS -->
+            <section class="panel" id="panel-cursos">
+                <header class="dash-header"><div><h1>Mis Cursos</h1><p>Gestiona el contenido y las notas de cada curso a tu cargo.</p></div></header>
+                <div class="card-grid" id="cursosGrid">
+                </div>
+            </section>
+
+            <!-- ESTUDIANTES -->
+            <section class="panel" id="panel-estudiantes">
+                <header class="dash-header"><div><h1>Estudiantes</h1><p>Consulta el listado de estudiantes en la base de datos.</p></div></header>
+                <div class="section-toolbar">
+                    <div class="search-box">🔍 <input type="text" id="searchEstudiante" placeholder="Buscar estudiante..."></div>
+                    <button class="primary-btn" id="btnOpenModalEstudiante" type="button">+ Nuevo estudiante</button>
+                </div>
+                <div class="dash-card">
+                    <table class="data-table">
+                        <thead><tr><th>Estudiante</th><th>Correo</th><th>Grado</th><th>Promedio</th><th>Acción</th></tr></thead>
+                        <tbody id="estudiantesTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- CALIFICACIONES -->
+            <section class="panel" id="panel-calificaciones">
+                <header class="dash-header"><div><h1>Calificaciones</h1><p>Registra y consulta las notas guardadas en la base de datos.</p></div></header>
+                <div class="section-toolbar">
+                    <div class="search-box">🔍 <input type="text" id="searchCalificacion" placeholder="Buscar por estudiante o curso..."></div>
+                    <button class="primary-btn" id="btnOpenModalCalificacion" type="button">+ Registrar calificación</button>
+                </div>
+                <div class="dash-card">
+                    <table class="data-table">
+                        <thead><tr><th>Estudiante</th><th>Curso</th><th>Actividad</th><th>Calificación</th><th>Fecha</th></tr></thead>
+                        <tbody id="calificacionesTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ACTIVIDADES -->
+            <section class="panel" id="panel-actividades">
+                <header class="dash-header"><div><h1>Actividades</h1><p>Crea y da seguimiento a los talleres, quices y proyectos escolares.</p></div></header>
+                <div class="section-toolbar">
+                    <div class="search-box">🔍 <input type="text" id="searchActividad" placeholder="Buscar actividad..."></div>
+                    <button class="primary-btn" id="btnOpenModalActividad" type="button">+ Crear actividad</button>
+                </div>
+                <div class="simple-list" id="actividadesList">
+                </div>
+            </section>
+
+            <!-- REPORTES -->
+            <section class="panel" id="panel-reportes">
+                <header class="dash-header">
+                    <div>
+                        <h1>Reportes y Observaciones Pedagógicas</h1>
+                        <p>Escribe reportes individuales a cada estudiante sobre su rendimiento, recomendaciones y compromisos escolares.</p>
+                    </div>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                        <button class="primary-btn" id="btnOpenModalSubirReporte" type="button" style="background:#0d9488;">
+                            📁 Subir documento / reporte
+                        </button>
+                        <button class="primary-btn" id="btnOpenModalReporte" type="button">
+                            ✍️ Escribir reporte individual
+                        </button>
+                    </div>
+                </header>
+
+                <!-- Pestañas internas de Reportes -->
+                <div class="reportes-tabs-bar">
+                    <button type="button" class="rep-tab-btn active" id="tabVerReportesEmitidos" data-rep-view="emitidos">
+                        📋 Reportes emitidos (<span id="countReportes">0</span>)
+                    </button>
+                    <button type="button" class="rep-tab-btn" id="tabVerDirectorioEst" data-rep-view="directorio">
+                        👥 Directorio de estudiantes (Redactar directo)
+                    </button>
+                    <button type="button" class="rep-tab-btn" id="tabVerRendimientoCursos" data-rep-view="cursos">
+                        📊 Estadísticas de cursos
+                    </button>
+                </div>
+
+                <!-- Barra de búsqueda y filtros -->
+                <div class="section-toolbar" id="toolbarReportes">
+                    <div class="search-box">
+                        🔍 <input type="text" id="searchReporte" placeholder="Buscar por estudiante, curso o palabra clave...">
+                    </div>
+                    <div class="filter-group">
+                        <select class="filter-select" id="filterReporteCurso">
+                            <option value="">Todos los cursos</option>
+                        </select>
+                        <select class="filter-select" id="filterReporteTipo">
+                            <option value="">Todos los tipos</option>
+                            <option value="Seguimiento Académico">Seguimiento Académico</option>
+                            <option value="Felicitación y Mérito">Felicitación y Mérito</option>
+                            <option value="Plan de Mejoramiento">Plan de Mejoramiento</option>
+                            <option value="Llamado de Atención">Llamado de Atención</option>
+                            <option value="Informe Convivencial">Informe Convivencial</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- VISTA 1: Lista de Reportes Individuales Emitidos -->
+                <div class="rep-subview active" id="repSubViewEmitidos">
+                    <div class="reportes-card-grid" id="reportesGrid">
+                        <!-- Se puebla dinámicamente con JavaScript -->
+                    </div>
+                    <div class="empty-state-card" id="emptyReportes" style="display:none;">
+                        <span class="empty-icon">📝</span>
+                        <h3>No hay reportes que coincidan con la búsqueda</h3>
+                        <p>Haz clic en <strong>"Escribir reporte individual"</strong> para redactar una valoración a un estudiante.</p>
+                    </div>
+                </div>
+
+                <!-- VISTA 2: Directorio de Estudiantes con botón de Redacción Rápida -->
+                <div class="rep-subview" id="repSubViewDirectorio" style="display:none;">
+                    <div class="dash-card">
+                        <div class="card-intro-note">
+                            💡 Selecciona a cualquier estudiante de la lista para escribirle un reporte personalizado inmediatamente.
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Estudiante</th>
+                                    <th>Grado</th>
+                                    <th>Promedio</th>
+                                    <th>Reportes Registrados</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="estudiantesReportesTbody">
+                                <!-- Se llena dinámicamente con JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- VISTA 3: Estadísticas de cursos -->
+                <div class="rep-subview" id="repSubViewCursos" style="display:none;">
+                    <div class="report-grid">
+                        <div class="report-card">
+                            <h3>Matemáticas 10°A</h3>
+                            <div class="report-value">4.3</div>
+                            <div class="report-bar-track"><div class="report-bar-fill" style="width:86%"></div></div>
+                            <p style="font-size:12.5px;color:var(--muted)">86% de aprobación · 28 estudiantes</p>
+                        </div>
+                        <div class="report-card">
+                            <h3>Física 11°A</h3>
+                            <div class="report-value">4.4</div>
+                            <div class="report-bar-track"><div class="report-bar-fill" style="width:88%"></div></div>
+                            <p style="font-size:12.5px;color:var(--muted)">88% de aprobación · 24 estudiantes</p>
+                        </div>
+                        <div class="report-card">
+                            <h3>Química 11°B</h3>
+                            <div class="report-value">4.2</div>
+                            <div class="report-bar-track"><div class="report-bar-fill" style="width:80%"></div></div>
+                            <p style="font-size:12.5px;color:var(--muted)">80% de aprobación · 25 estudiantes</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PERFIL -->
+            <section class="panel" id="panel-perfil">
+                <header class="dash-header"><div><h1>Mi Perfil</h1><p>Información de tu cuenta docente.</p></div></header>
+                <div class="profile-card">
+                    <div class="profile-avatar" id="profileAvatar">D</div>
+                    <div class="profile-details">
+                        <h2 id="profileName">Docente</h2>
+                        <p id="profileEmail">docente@institucion.edu.co</p>
+                        <p>Institución Educativa Inocencio Chincá · Tame, Arauca</p>
+                        <p>Rol: Docente</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-school">
+            <div class="shield" aria-hidden="true">✦</div>
+            <div><strong>Institución Educativa Inocencio Chincá</strong>Tame, Arauca</div>
+        </div>
+        <span>© <span id="footerYear">2026</span> Organizador de Notas</span>
+    </footer>
+
+    <!-- MODAL NUEVO ESTUDIANTE -->
+    <div class="modal-overlay" id="modalEstudiante">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2>➕ Registrar Nuevo Estudiante</h2>
+                <button class="modal-close" data-close-modal="modalEstudiante">&times;</button>
+            </div>
+            <form id="formNuevoEstudiante">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="estNombre">Nombre completo</label>
+                        <input type="text" id="estNombre" placeholder="Ej: Camilo Andrés Restrepo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="estEmail">Correo institucional / estudiantil</label>
+                        <input type="email" id="estEmail" placeholder="ejemplo@estudiante.edu.co" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="estGrado">Grado / Grupo</label>
+                        <select id="estGrado" required>
+                            <option value="10°A">10°A</option>
+                            <option value="10°B">10°B</option>
+                            <option value="10°C">10°C</option>
+                            <option value="11°A">11°A</option>
+                            <option value="11°B">11°B</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="estCurso">Curso a matricular</label>
+                        <select id="estCurso">
+                            <option value="">Seleccione un curso inicial...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="estTelefono">Teléfono de contacto (opcional)</label>
+                        <input type="tel" id="estTelefono" placeholder="Ej: 310 987 6543">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" data-close-modal="modalEstudiante">Cancelar</button>
+                    <button type="submit" class="primary-btn">Guardar en Base de Datos</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL REGISTRAR CALIFICACIÓN -->
+    <div class="modal-overlay" id="modalCalificacion">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2>✏️ Registrar Calificación</h2>
+                <button class="modal-close" data-close-modal="modalCalificacion">&times;</button>
+            </div>
+            <form id="formNuevaCalificacion">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="calEstudiante">Estudiante</label>
+                        <select id="calEstudiante" required>
+                            <option value="">Seleccione estudiante...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="calCurso">Curso / Asignatura</label>
+                        <select id="calCurso" required>
+                            <option value="">Seleccione curso...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="calActividadNombre">Nombre de la actividad o evaluación</label>
+                        <input type="text" id="calActividadNombre" placeholder="Ej: Taller evaluativo de Funciones" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="calNota">Nota (Escala 1.0 a 5.0)</label>
+                        <input type="number" id="calNota" min="1.0" max="5.0" step="0.1" placeholder="Ej: 4.5" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="calObservacion">Observación / Retroalimentación</label>
+                        <textarea id="calObservacion" rows="2" placeholder="Ej: Buen dominio conceptual, felicitaciones."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" data-close-modal="modalCalificacion">Cancelar</button>
+                    <button type="submit" class="primary-btn">Guardar Nota</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL CREAR ACTIVIDAD -->
+    <div class="modal-overlay" id="modalActividad">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2>📋 Crear Actividad Escolar</h2>
+                <button class="modal-close" data-close-modal="modalActividad">&times;</button>
+            </div>
+            <form id="formNuevaActividad">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="actCurso">Curso</label>
+                        <select id="actCurso" required>
+                            <option value="">Seleccione curso...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="actTitulo">Título del trabajo / actividad</label>
+                        <input type="text" id="actTitulo" placeholder="Ej: Laboratorio de Soluciones y pH" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="actTipo">Tipo</label>
+                        <select id="actTipo">
+                            <option value="Taller">Taller</option>
+                            <option value="Laboratorio">Laboratorio</option>
+                            <option value="Quiz">Quiz</option>
+                            <option value="Proyecto">Proyecto</option>
+                            <option value="Evaluación">Evaluación Bimestral</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="actFecha">Fecha de entrega</label>
+                        <input type="text" id="actFecha" placeholder="Ej: 15 sep. 2026" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" data-close-modal="modalActividad">Cancelar</button>
+                    <button type="submit" class="primary-btn">Crear en Base de Datos</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL ESCRIBIR REPORTE INDIVIDUAL A ESTUDIANTE -->
+    <div class="modal-overlay" id="modalReporteIndividual">
+        <div class="modal-card modal-card-lg">
+            <div class="modal-header">
+                <h2>✍️ Escribir Reporte Individual</h2>
+                <button class="modal-close" data-close-modal="modalReporteIndividual">&times;</button>
+            </div>
+            <form id="formNuevoReporte">
+                <div class="modal-body">
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label for="repEstudiante">Estudiante destinatario <span class="req">*</span></label>
+                            <select id="repEstudiante" required>
+                                <option value="">Selecciona al estudiante...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="repCurso">Asignatura / Curso <span class="req">*</span></label>
+                            <select id="repCurso" required>
+                                <option value="">Selecciona el curso...</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label for="repPeriodo">Periodo escolar</label>
+                            <select id="repPeriodo">
+                                <option value="Primer Periodo">Primer Periodo</option>
+                                <option value="Segundo Periodo">Segundo Periodo</option>
+                                <option value="Tercer Periodo">Tercer Periodo</option>
+                                <option value="Cuarto Periodo">Cuarto Periodo</option>
+                                <option value="Informe Integral">Informe Integral / Acudientes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="repTipo">Tipo de reporte u observación</label>
+                            <select id="repTipo">
+                                <option value="Seguimiento Académico">Seguimiento Académico</option>
+                                <option value="Felicitación y Mérito">Felicitación y Mérito</option>
+                                <option value="Plan de Mejoramiento">Plan de Mejoramiento</option>
+                                <option value="Llamado de Atención">Llamado de Atención</option>
+                                <option value="Informe Convivencial">Informe Convivencial</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="repTitulo">Título o motivo del reporte <span class="req">*</span></label>
+                        <input type="text" id="repTitulo" placeholder="Ej: Progreso destacado en razonamiento algebraico y compromiso" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="repContenido">Valoración y observación pedagógica detallada <span class="req">*</span></label>
+                        <textarea id="repContenido" rows="4" placeholder="Describe los avances del estudiante, fortalezas cognitivas, comprensión de temáticas, participación en clase o dificultades detectadas..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="repRecomendaciones">Recomendaciones y compromisos formativos</label>
+                        <textarea id="repRecomendaciones" rows="3" placeholder="Sugerencias para el estudiante en casa, compromisos académicos y orientaciones para los acudientes..."></textarea>
+                    </div>
+
+                    <!-- Adjuntar archivo opcional al reporte escrito -->
+                    <div class="form-group">
+                        <label>📎 Adjuntar archivo, informe escaneado o rúbrica (Opcional)</label>
+                        <div class="upload-dropzone" id="dropzoneReporteEscrito">
+                            <input type="file" id="repArchivoEscrito" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" style="display:none;">
+                            <span class="upload-icon">📄</span>
+                            <div class="upload-info-text">
+                                <strong>Haz clic para adjuntar un archivo</strong> o arrástralo aquí
+                                <small>Formatos admitidos: PDF, Word, Excel o imágenes (máx. 15MB)</small>
+                            </div>
+                            <div class="file-chosen-preview" id="previewArchivoEscrito" style="display:none;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" data-close-modal="modalReporteIndividual">Cancelar</button>
+                    <button type="submit" class="primary-btn">💾 Guardar y Emitir Reporte</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL ESPECÍFICO: SUBIR ARCHIVO DE REPORTE (PDF / BOLETÍN / DOCUMENTO) -->
+    <div class="modal-overlay" id="modalSubirReporte">
+        <div class="modal-card modal-card-lg">
+            <div class="modal-header">
+                <h2>📁 Subir Documento o Boletín de Reporte</h2>
+                <button class="modal-close" data-close-modal="modalSubirReporte">&times;</button>
+            </div>
+            <form id="formSubirReporteDoc">
+                <div class="modal-body">
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label for="subirRepEstudiante">Estudiante destinatario <span class="req">*</span></label>
+                            <select id="subirRepEstudiante" required>
+                                <option value="">Selecciona al estudiante...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="subirRepCurso">Asignatura / Curso <span class="req">*</span></label>
+                            <select id="subirRepCurso" required>
+                                <option value="">Selecciona el curso...</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label for="subirRepPeriodo">Periodo escolar</label>
+                            <select id="subirRepPeriodo">
+                                <option value="Primer Periodo">Primer Periodo</option>
+                                <option value="Segundo Periodo">Segundo Periodo</option>
+                                <option value="Tercer Periodo">Tercer Periodo</option>
+                                <option value="Cuarto Periodo">Cuarto Periodo</option>
+                                <option value="Informe Anual">Informe Anual Final</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="subirRepTipo">Tipo de reporte</label>
+                            <select id="subirRepTipo">
+                                <option value="Boletín / Informe PDF">Boletín / Informe PDF</option>
+                                <option value="Seguimiento Académico">Seguimiento Académico</option>
+                                <option value="Plan de Mejoramiento">Plan de Mejoramiento</option>
+                                <option value="Felicitación y Mérito">Felicitación y Mérito</option>
+                                <option value="Llamado de Atención">Llamado de Atención</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subirRepTitulo">Nombre o título del documento <span class="req">*</span></label>
+                        <input type="text" id="subirRepTitulo" placeholder="Ej: Boletín oficial primer periodo - Matemáticas 10°A" required>
+                    </div>
+
+                    <!-- Zona para subir el archivo -->
+                    <div class="form-group">
+                        <label>Selecciona o arrastra el archivo a subir <span class="req">*</span></label>
+                        <div class="upload-dropzone active-zone" id="dropzoneSubirReporte">
+                            <input type="file" id="inputSubirArchivo" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" required style="display:none;">
+                            <span class="upload-icon">☁️</span>
+                            <div class="upload-info-text">
+                                <strong>Haz clic para examinar tu dispositivo</strong> o suelta el archivo aquí
+                                <small>Admite PDF, Word (.docx), Excel (.xlsx), imágenes PNG/JPG (hasta 15MB)</small>
+                            </div>
+                            <div class="file-chosen-preview" id="previewSubirArchivo" style="display:none;"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subirRepContenido">Descripción o comentarios adicionales del reporte</label>
+                        <textarea id="subirRepContenido" rows="3" placeholder="Detalles sobre el archivo adjunto, resumen del boletín o instrucciones de revisión para el estudiante y acudiente..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" data-close-modal="modalSubirReporte">Cancelar</button>
+                    <button type="submit" class="primary-btn" style="background:#0d9488;">
+                        ☁️ Subir y Publicar Reporte
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL VER / IMPRIMIR REPORTE INDIVIDUAL -->
+    <div class="modal-overlay" id="modalVerReporte">
+        <div class="modal-card modal-card-lg">
+            <div class="modal-header">
+                <h2>📄 Reporte Pedagógico Individual</h2>
+                <button class="modal-close" data-close-modal="modalVerReporte">&times;</button>
+            </div>
+            <div class="modal-body" id="verReporteContent">
+                <!-- Se llena dinámicamente -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" data-close-modal="modalVerReporte">Cerrar</button>
+                <button type="button" class="primary-btn" id="btnPrintReporte">🖨️ Imprimir Reporte</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="menudocentes.js"></script>
+</body>
+</html>
