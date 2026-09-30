@@ -275,6 +275,462 @@
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+    <!-- MODAL DE INICIO DE SESIÓN CON GOOGLE -->
+    <div class="google-modal-overlay" id="googleModalOverlay" aria-hidden="true">
+        <div class="google-modal-card" role="dialog" aria-modal="true" aria-labelledby="googleModalTitle">
+            <!-- Botón cerrar -->
+            <button type="button" class="google-modal-close" id="googleModalClose" aria-label="Cerrar ventana de Google">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+
+            <!-- Encabezado de Google con logo oficial -->
+            <div class="google-modal-header">
+                <div class="google-logo-wrap" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="40" height="40">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+                    </svg>
+                </div>
+                <h2 id="googleModalTitle">Acceder con Google</h2>
+                <p class="google-modal-subtitle">
+                    Elige una cuenta para continuar en <strong class="app-highlight">Organizador de Notas</strong>
+                    <span class="school-subtag">I.E. Inocencio Chincá</span>
+                </p>
+            </div>
+
+            <!-- VISTA 1: Lista de Cuentas de Google -->
+            <div class="google-view-pane" id="googleAccountsView">
+                <div class="google-accounts-list" id="googleAccountsList">
+                    <!-- Cuenta Personal Detectada / Principal -->
+                    <button type="button" class="google-account-item" data-email="sebasherre2026@gmail.com" data-name="Sebastián Herrera" data-role="auto">
+                        <div class="google-avatar-badge personal-avatar">S</div>
+                        <div class="google-account-details">
+                            <div class="account-name-line">
+                                <strong>Sebastián Herrera</strong>
+                                <span class="badge-role-tag badge-personal">Cuenta Google</span>
+                            </div>
+                            <span class="account-email">sebasherre2026@gmail.com</span>
+                        </div>
+                        <span class="google-enter-arrow">›</span>
+                    </button>
+
+                    <!-- Cuenta Institucional Docente -->
+                    <button type="button" class="google-account-item" data-email="docente@institucion.edu.co" data-name="Carlos Andrés Mejía" data-role="docente">
+                        <div class="google-avatar-badge docente-avatar">C</div>
+                        <div class="google-account-details">
+                            <div class="account-name-line">
+                                <strong>Carlos Andrés Mejía</strong>
+                                <span class="badge-role-tag badge-docente">👨‍🏫 Docente</span>
+                            </div>
+                            <span class="account-email">docente@institucion.edu.co</span>
+                        </div>
+                        <span class="google-enter-arrow">›</span>
+                    </button>
+
+                    <!-- Cuenta Institucional Estudiante 1 -->
+                    <button type="button" class="google-account-item" data-email="maria.perez@estudiante.edu.co" data-name="María José Pérez" data-role="estudiante" data-grade="10°A">
+                        <div class="google-avatar-badge student-avatar">M</div>
+                        <div class="google-account-details">
+                            <div class="account-name-line">
+                                <strong>María José Pérez</strong>
+                                <span class="badge-role-tag badge-student">🎓 Estudiante · 10°A</span>
+                            </div>
+                            <span class="account-email">maria.perez@estudiante.edu.co</span>
+                        </div>
+                        <span class="google-enter-arrow">›</span>
+                    </button>
+
+                    <!-- Cuenta Institucional Estudiante 2 -->
+                    <button type="button" class="google-account-item" data-email="juan.gomez@estudiante.edu.co" data-name="Juan Esteban Gómez" data-role="estudiante" data-grade="11°A">
+                        <div class="google-avatar-badge student-avatar-2">J</div>
+                        <div class="google-account-details">
+                            <div class="account-name-line">
+                                <strong>Juan Esteban Gómez</strong>
+                                <span class="badge-role-tag badge-student">🎓 Estudiante · 11°A</span>
+                            </div>
+                            <span class="account-email">juan.gomez@estudiante.edu.co</span>
+                        </div>
+                        <span class="google-enter-arrow">›</span>
+                    </button>
+                </div>
+
+                <div class="google-divider-line"></div>
+
+                <!-- Botón: Usar otra cuenta de Google -->
+                <button type="button" class="google-use-another-btn" id="googleUseAnotherBtn">
+                    <span class="another-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/><path d="M19 8v6M22 11h-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    </span>
+                    <span>Usar otra cuenta de Google</span>
+                </button>
+            </div>
+
+            <!-- VISTA 2: Formulario para ingresar cualquier cuenta de Google -->
+            <div class="google-view-pane hidden" id="googleCustomView">
+                <button type="button" class="google-back-link" id="googleBackToAccounts">
+                    ← Volver a la lista de cuentas
+                </button>
+
+                <h3 class="custom-title">Ingresa tu cuenta de Google</h3>
+                <p class="custom-subtitle">Se sincronizará automáticamente con tu rol en el sistema académico.</p>
+
+                <form id="googleCustomForm" class="google-custom-form" novalidate>
+                    <div class="form-group-google">
+                        <label for="googleCustomEmail">Correo electrónico de Google</label>
+                        <div class="input-wrap-google">
+                            <input type="email" id="googleCustomEmail" placeholder="tunombre@gmail.com o @institucion.edu.co" required autocomplete="email">
+                        </div>
+                        <small class="error-google" id="googleEmailError"></small>
+                    </div>
+
+                    <div class="form-group-google">
+                        <label for="googleCustomName">Nombre completo</label>
+                        <div class="input-wrap-google">
+                            <input type="text" id="googleCustomName" placeholder="Ej. Andrés Camilo Torres" required autocomplete="name">
+                        </div>
+                    </div>
+
+                    <div class="form-group-google">
+                        <label>Ingresar como</label>
+                        <div class="google-role-pills">
+                            <label class="role-pill-label">
+                                <input type="radio" name="googleRole" value="docente" id="googleRoleDocente">
+                                <span class="pill-box">👨‍🏫 Docente</span>
+                            </label>
+                            <label class="role-pill-label">
+                                <input type="radio" name="googleRole" value="estudiante" id="googleRoleEstudiante" checked>
+                                <span class="pill-box">🎓 Estudiante</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group-google" id="googleGradeWrap">
+                        <label for="googleCustomGrade">Grado escolar</label>
+                        <select id="googleCustomGrade" class="google-select">
+                            <option value="10°A">10°A</option>
+                            <option value="10°B">10°B</option>
+                            <option value="10°C">10°C</option>
+                            <option value="11°A">11°A</option>
+                            <option value="11°B">11°B</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="google-submit-btn" id="googleSubmitCustom">
+                        Continuar con Google
+                    </button>
+                </form>
+            </div>
+
+            <!-- Footer de privacidad de Google -->
+            <div class="google-modal-footer">
+                <p>
+                    Para continuar, Google compartirá tu nombre, correo electrónico y foto de perfil con <strong>Organizador de Notas</strong>. Consulta las <a href="#" onclick="return false;">Condiciones de Servicio</a> y la <a href="#" onclick="return false;">Política de Privacidad</a>.
+                </p>
+            </div>
+
+            <!-- Loading overlay mientras se procesa el acceso -->
+            <div class="google-loading-overlay" id="googleLoadingOverlay">
+                <div class="google-spinner" aria-hidden="true"></div>
+                <strong id="googleLoadingText">Conectando con Google...</strong>
+                <p>Verificando identidad escolar...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE RECUPERACIÓN / OBTENCIÓN DE CONTRASEÑA -->
+    <div class="recover-modal-overlay" id="recoverModalOverlay" aria-hidden="true">
+        <div class="recover-modal-card" role="dialog" aria-modal="true" aria-labelledby="recoverModalTitle">
+            <!-- Botón cerrar -->
+            <button type="button" class="recover-modal-close" id="recoverModalClose" aria-label="Cerrar modal de recuperación">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+
+            <!-- Encabezado -->
+            <div class="recover-modal-header">
+                <div class="recover-key-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="32" height="32" fill="none">
+                        <circle cx="8" cy="15" r="5" stroke="currentColor" stroke-width="2"/>
+                        <path d="m11.5 11.5 8.5-8.5M16 7l2 2M19 4l2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h2 id="recoverModalTitle">Recuperar Contraseña</h2>
+                <p class="recover-modal-subtitle">
+                    Obtén o restablece tu clave de acceso al sistema escolar.
+                </p>
+
+                <!-- Selector de modo Docente / Estudiante -->
+                <div class="recover-role-switcher" id="recoverRoleSwitcher">
+                    <button type="button" class="recover-role-btn active" id="btnRecoverDocente" data-recover-role="docente">
+                        👨‍🏫 Modo Docente
+                    </button>
+                    <button type="button" class="recover-role-btn" id="btnRecoverEstudiante" data-recover-role="estudiante">
+                        🎓 Modo Estudiante
+                    </button>
+                </div>
+            </div>
+
+            <!-- PASO 1: Ingreso de correo para buscar la cuenta -->
+            <div class="recover-body-pane" id="recoverStep1Pane">
+                <form id="recoverCheckForm" novalidate>
+                    <label for="recoverEmailInput">Correo electrónico registrado (<span id="recoverEmailRoleLabel">docente</span>)</label>
+                    <div class="recover-input-wrap">
+                        <span class="recover-input-icon" aria-hidden="true">✉️</span>
+                        <input type="email" id="recoverEmailInput" placeholder="ejemplo@institucion.edu.co" required autocomplete="email">
+                    </div>
+                    <small class="recover-error" id="recoverStep1Error"></small>
+
+                    <div class="quick-suggest-box">
+                        <span>Cuentas sugeridas de ejemplo:</span>
+                        <div class="quick-chips">
+                            <button type="button" class="quick-chip" id="chipDocente">👨‍🏫 docente@institucion.edu.co</button>
+                            <button type="button" class="quick-chip" id="chipEstudiante">🎓 maria.perez@estudiante.edu.co</button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="recover-submit-btn" id="btnBuscarCuenta">
+                        🔍 Buscar mi cuenta y obtener acceso
+                    </button>
+                </form>
+            </div>
+
+            <!-- PASO 2: Cuenta encontrada y opciones para obtener o restablecer -->
+            <div class="recover-body-pane hidden" id="recoverStep2Pane">
+                <!-- Ficha de cuenta verificada -->
+                <div class="account-verified-card">
+                    <div class="verified-avatar" id="verifiedAvatar">C</div>
+                    <div class="verified-info">
+                        <div class="verified-name-row">
+                            <strong id="verifiedName">Carlos Andrés Mejía</strong>
+                            <span class="verified-badge-pill" id="verifiedRoleBadge">👨‍🏫 Docente</span>
+                        </div>
+                        <span class="verified-email" id="verifiedEmail">docente@institucion.edu.co</span>
+                        <span class="verified-grade" id="verifiedGrade" style="display:none;"></span>
+                    </div>
+                </div>
+
+                <!-- Pestañas de acción: Ver contraseña actual / Restablecer nueva -->
+                <div class="recover-action-tabs">
+                    <button type="button" class="recover-action-tab active" id="tabObtenerClave">
+                        🔑 Obtener Contraseña Actual
+                    </button>
+                    <button type="button" class="recover-action-tab" id="tabCambiarClave">
+                        ✏️ Restablecer Nueva Contraseña
+                    </button>
+                </div>
+
+                <!-- SUB-VISTA A: Mostrar Contraseña Actual -->
+                <div class="recover-subview" id="subviewObtenerClave">
+                    <div class="password-display-card">
+                        <span class="pwd-label">Contraseña registrada en el sistema:</span>
+                        <div class="pwd-box">
+                            <input type="password" id="displayCurrentPassword" readonly value="123456">
+                            <button type="button" class="btn-toggle-pwd" id="btnToggleCurrentPwd" aria-label="Mostrar u ocultar contraseña">👁️</button>
+                            <button type="button" class="btn-copy-pwd" id="btnCopyPwd" title="Copiar contraseña">📋 Copiar</button>
+                        </div>
+                        <p class="pwd-tip">Puedes usar esta misma contraseña o iniciar sesión de inmediato con un solo clic.</p>
+                    </div>
+
+                    <button type="button" class="recover-login-direct-btn" id="btnDirectLogin">
+                        🚀 Iniciar sesión con esta cuenta ahora
+                    </button>
+                </div>
+
+                <!-- SUB-VISTA B: Formulario para ingresar Nueva Contraseña -->
+                <div class="recover-subview hidden" id="subviewCambiarClave">
+                    <form id="formResetPassword" novalidate>
+                        <div class="recover-form-group">
+                            <label for="newPasswordInput">Nueva contraseña (mínimo 4 caracteres)</label>
+                            <div class="recover-input-wrap">
+                                <span class="recover-input-icon">🔒</span>
+                                <input type="password" id="newPasswordInput" placeholder="Escribe tu nueva contraseña" required minlength="4">
+                                <button type="button" class="btn-toggle-pwd" id="btnToggleNewPwd" aria-label="Mostrar contraseña">👁️</button>
+                            </div>
+                        </div>
+
+                        <div class="recover-form-group">
+                            <label for="confirmNewPasswordInput">Confirmar nueva contraseña</label>
+                            <div class="recover-input-wrap">
+                                <span class="recover-input-icon">🔒</span>
+                                <input type="password" id="confirmNewPasswordInput" placeholder="Repite tu nueva contraseña" required minlength="4">
+                            </div>
+                            <small class="recover-error" id="resetPasswordError"></small>
+                        </div>
+
+                        <button type="submit" class="recover-submit-btn" id="btnSaveNewPassword">
+                            💾 Guardar nueva contraseña e Iniciar Sesión
+                        </button>
+                    </form>
+                </div>
+
+                <button type="button" class="recover-back-link" id="btnBackToStep1">
+                    ← Buscar con otro correo electrónico
+                </button>
+            </div>
+
+            <!-- Overlay de carga -->
+            <div class="recover-loading-overlay" id="recoverLoadingOverlay">
+                <div class="recover-spinner"></div>
+                <strong id="recoverLoadingText">Buscando cuenta en base de datos...</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE CREACIÓN DE CUENTA (DOCENTE / ESTUDIANTE) -->
+    <div class="register-modal-overlay" id="registerModalOverlay" aria-hidden="true">
+        <div class="register-modal-card" role="dialog" aria-modal="true" aria-labelledby="registerModalTitle">
+            <!-- Botón cerrar -->
+            <button type="button" class="register-modal-close" id="registerModalClose" aria-label="Cerrar modal de registro">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+
+            <!-- Encabezado -->
+            <div class="register-modal-header">
+                <div class="register-header-icon" id="registerHeaderIcon" aria-hidden="true">
+                    <span>✨</span>
+                </div>
+                <h2 id="registerModalTitle">Crear Cuenta Nueva</h2>
+                <p class="register-modal-subtitle" id="registerModalSubtitle">
+                    Completa tus datos para ingresar al Organizador de Notas de la I.E. Inocencio Chincá.
+                </p>
+
+                <!-- Selector de rol en Registro -->
+                <div class="register-role-switcher" id="registerRoleSwitcher">
+                    <button type="button" class="register-role-btn active" id="btnRegDocente" data-reg-role="docente">
+                        👨‍🏫 Crear como Docente
+                    </button>
+                    <button type="button" class="register-role-btn" id="btnRegEstudiante" data-reg-role="estudiante">
+                        🎓 Crear como Estudiante
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cuerpo del formulario -->
+            <div class="register-body-pane">
+                <form id="registerForm" novalidate>
+                    <!-- Nombre Completo -->
+                    <div class="reg-form-group">
+                        <label for="regNombre">Nombre y Apellidos completos <span class="req-star">*</span></label>
+                        <div class="reg-input-wrap">
+                            <span class="reg-input-icon">👤</span>
+                            <input type="text" id="regNombre" placeholder="Ej. Carlos Andrés Mejía o María José Pérez" required autocomplete="name">
+                        </div>
+                        <small class="reg-error" id="regNombreError"></small>
+                    </div>
+
+                    <!-- Correo electrónico -->
+                    <div class="reg-form-group">
+                        <label for="regEmail">Correo electrónico <span id="regEmailHint" class="label-hint">(institucional o personal)</span> <span class="req-star">*</span></label>
+                        <div class="reg-input-wrap">
+                            <span class="reg-input-icon">✉️</span>
+                            <input type="email" id="regEmail" placeholder="usuario@institucion.edu.co" required autocomplete="email">
+                        </div>
+                        <small class="reg-error" id="regEmailError"></small>
+                    </div>
+
+                    <!-- CAMPOS EXCLUSIVOS PARA DOCENTE -->
+                    <div id="fieldsDocente" class="role-specific-fields">
+                        <div class="reg-form-group">
+                            <label for="regAsignatura">Área / Asignatura principal a cargo <span class="req-star">*</span></label>
+                            <div class="reg-input-wrap">
+                                <span class="reg-input-icon">📚</span>
+                                <select id="regAsignatura" class="reg-select">
+                                    <option value="Matemáticas">Matemáticas</option>
+                                    <option value="Ciencias Naturales y Biología">Ciencias Naturales y Biología</option>
+                                    <option value="Física">Física</option>
+                                    <option value="Química">Química</option>
+                                    <option value="Lengua Castellana y Literatura">Lengua Castellana y Literatura</option>
+                                    <option value="Inglés">Inglés</option>
+                                    <option value="Ciencias Sociales y Filosofía">Ciencias Sociales y Filosofía</option>
+                                    <option value="Tecnología e Informática">Tecnología e Informática</option>
+                                    <option value="Educación Física y Deporte">Educación Física y Deporte</option>
+                                    <option value="Ética y Valores Humanos">Ética y Valores Humanos</option>
+                                    <option value="Educación Artística">Educación Artística</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="reg-form-group">
+                            <label for="regTelefonoDocente">Teléfono / Celular de contacto docente</label>
+                            <div class="reg-input-wrap">
+                                <span class="reg-input-icon">📞</span>
+                                <input type="tel" id="regTelefonoDocente" placeholder="Ej. 310 123 4567" autocomplete="tel">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CAMPOS EXCLUSIVOS PARA ESTUDIANTE -->
+                    <div id="fieldsEstudiante" class="role-specific-fields hidden">
+                        <div class="reg-form-group">
+                            <label for="regGrado">Grado escolar / Grupo <span class="req-star">*</span></label>
+                            <div class="reg-input-wrap">
+                                <span class="reg-input-icon">🏫</span>
+                                <select id="regGrado" class="reg-select">
+                                    <option value="10°A">10°A</option>
+                                    <option value="10°B">10°B</option>
+                                    <option value="10°C">10°C</option>
+                                    <option value="11°A">11°A</option>
+                                    <option value="11°B">11°B</option>
+                                </select>
+                            </div>
+                            <span class="reg-help-text">Se te asignarán automáticamente todas las áreas y docentes de este grado.</span>
+                        </div>
+
+                        <div class="reg-form-group">
+                            <label for="regTelefonoEstudiante">Teléfono celular o contacto del acudiente</label>
+                            <div class="reg-input-wrap">
+                                <span class="reg-input-icon">📱</span>
+                                <input type="tel" id="regTelefonoEstudiante" placeholder="Ej. 320 111 2233" autocomplete="tel">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contraseña -->
+                    <div class="reg-form-grid-2">
+                        <div class="reg-form-group">
+                            <label for="regPassword">Contraseña <span class="req-star">*</span></label>
+                            <div class="reg-input-wrap">
+                                <span class="reg-input-icon">🔒</span>
+                                <input type="password" id="regPassword" placeholder="Mínimo 4 caracteres" required minlength="4">
+                                <button type="button" class="btn-toggle-pwd" id="btnToggleRegPwd" aria-label="Mostrar contraseña">👁️</button>
+                            </div>
+                            <small class="reg-error" id="regPasswordError"></small>
+                        </div>
+
+                        <div class="reg-form-group">
+                            <label for="regConfirmPassword">Confirmar contraseña <span class="req-star">*</span></label>
+                            <div class="reg-input-wrap">
+                                <span class="reg-input-icon">🔒</span>
+                                <input type="password" id="regConfirmPassword" placeholder="Repite la contraseña" required minlength="4">
+                            </div>
+                            <small class="reg-error" id="regConfirmPasswordError"></small>
+                        </div>
+                    </div>
+
+                    <div class="reg-general-error" id="regGeneralError"></div>
+
+                    <!-- Botón de envío -->
+                    <button type="submit" class="register-submit-btn" id="btnSubmitRegister">
+                        🚀 Registrar cuenta como Docente
+                    </button>
+
+                    <div class="reg-login-link-box">
+                        ¿Ya tienes una cuenta registrada?
+                        <button type="button" id="btnRegToLogin">Inicia sesión aquí</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Loading overlay -->
+            <div class="register-loading-overlay" id="registerLoadingOverlay">
+                <div class="register-spinner"></div>
+                <strong id="registerLoadingText">Registrando tu cuenta en la base de datos...</strong>
+                <p>Configurando permisos y asignaturas escolares...</p>
+            </div>
+        </div>
+    </div>
+
     <script src="menu.js"></script>
 </body>
 </html>

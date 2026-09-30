@@ -1335,3 +1335,1396 @@ a {
         padding: 35px 15px;
     }
 }
+
+/* ====================================================================
+   ESTILOS DEL MODAL DE INICIO DE SESIÓN CON GOOGLE (GOOGLE ACCOUNT CHOOSER)
+   ==================================================================== */
+.google-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.google-modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.google-modal-card {
+    background: #ffffff;
+    max-width: 460px;
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.25), 0 0 1px 1px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+    transform: scale(0.94) translateY(8px);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #202124;
+}
+
+.google-modal-overlay.active .google-modal-card {
+    transform: scale(1) translateY(0);
+}
+
+.google-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: #5f6368;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    z-index: 10;
+}
+
+.google-modal-close:hover {
+    background: #f1f3f4;
+    color: #202124;
+}
+
+.google-modal-header {
+    text-align: center;
+    padding: 32px 28px 18px;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.google-logo-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+}
+
+.google-modal-header h2 {
+    font-size: 23px;
+    font-weight: 500;
+    color: #202124;
+    letter-spacing: -0.3px;
+    margin-bottom: 8px;
+}
+
+.google-modal-subtitle {
+    font-size: 13.5px;
+    color: #5f6368;
+    line-height: 1.45;
+}
+
+.google-modal-subtitle strong.app-highlight {
+    color: #1a73e8;
+    font-weight: 600;
+}
+
+.school-subtag {
+    display: block;
+    font-size: 11.5px;
+    color: #80868b;
+    margin-top: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+/* VISTA DE LISTA DE CUENTAS */
+.google-view-pane {
+    padding: 16px 24px 20px;
+}
+
+.google-view-pane.hidden {
+    display: none;
+}
+
+.google-accounts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.google-account-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.1s ease;
+}
+
+.google-account-item:hover {
+    background: #f8fafd;
+    border-color: #e2ecfd;
+    transform: translateX(2px);
+}
+
+.google-account-item:active {
+    background: #eef4fe;
+}
+
+.google-avatar-badge {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    font-weight: 700;
+    color: #ffffff;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.personal-avatar {
+    background: linear-gradient(135deg, #ea4335, #fbbc05, #34a853, #4285f4);
+}
+
+.docente-avatar {
+    background: linear-gradient(135deg, #1a73e8, #0d47a1);
+}
+
+.student-avatar {
+    background: linear-gradient(135deg, #34a853, #137333);
+}
+
+.student-avatar-2 {
+    background: linear-gradient(135deg, #00897b, #004d40);
+}
+
+.google-account-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.account-name-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 2px;
+}
+
+.account-name-line strong {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: #202124;
+}
+
+.badge-role-tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 999px;
+    line-height: 1.2;
+}
+
+.badge-personal {
+    background: #e8f0fe;
+    color: #1967d2;
+}
+
+.badge-docente {
+    background: #e8f0fe;
+    color: #1a73e8;
+}
+
+.badge-student {
+    background: #e6f4ea;
+    color: #137333;
+}
+
+.account-email {
+    display: block;
+    font-size: 13px;
+    color: #5f6368;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.google-enter-arrow {
+    font-size: 20px;
+    color: #9aa0a6;
+    font-weight: 300;
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.google-account-item:hover .google-enter-arrow {
+    color: #1a73e8;
+    transform: translateX(3px);
+}
+
+.google-divider-line {
+    height: 1px;
+    background: #eaedf1;
+    margin: 10px 0;
+}
+
+.google-use-another-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 12px 14px;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    color: #1a73e8;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.18s ease;
+}
+
+.google-use-another-btn:hover {
+    background: #f1f6fd;
+}
+
+.another-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #e8f0fe;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1a73e8;
+    flex-shrink: 0;
+}
+
+/* VISTA DE CUENTA PERSONALIZADA */
+.google-back-link {
+    background: transparent;
+    border: none;
+    color: #1a73e8;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 4px 0 12px;
+    display: inline-block;
+}
+
+.google-back-link:hover {
+    text-decoration: underline;
+}
+
+.custom-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: #202124;
+    margin-bottom: 4px;
+}
+
+.custom-subtitle {
+    font-size: 12.5px;
+    color: #5f6368;
+    margin-bottom: 16px;
+}
+
+.form-group-google {
+    margin-bottom: 14px;
+}
+
+.form-group-google label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #3c4043;
+    margin-bottom: 6px;
+}
+
+.input-wrap-google {
+    height: 44px;
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #ffffff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-wrap-google:focus-within {
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+}
+
+.input-wrap-google input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding: 0 12px;
+    font-size: 14px;
+    color: #202124;
+    outline: none;
+}
+
+.error-google {
+    display: block;
+    color: #d93025;
+    font-size: 11.5px;
+    margin-top: 4px;
+    min-height: 14px;
+}
+
+.google-role-pills {
+    display: flex;
+    gap: 10px;
+}
+
+.role-pill-label {
+    flex: 1;
+    cursor: pointer;
+}
+
+.role-pill-label input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.pill-box {
+    display: block;
+    text-align: center;
+    padding: 9px 12px;
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #5f6368;
+    transition: all 0.15s ease;
+}
+
+.role-pill-label input:checked + .pill-box {
+    background: #e8f0fe;
+    border-color: #1a73e8;
+    color: #1a73e8;
+}
+
+.google-select {
+    width: 100%;
+    height: 44px;
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    padding: 0 12px;
+    font-size: 14px;
+    color: #202124;
+    background: #ffffff;
+    outline: none;
+    cursor: pointer;
+}
+
+.google-select:focus {
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+}
+
+.google-submit-btn {
+    width: 100%;
+    height: 46px;
+    background: #1a73e8;
+    color: #ffffff;
+    border: none;
+    border-radius: 24px;
+    font-size: 14.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
+    margin-top: 8px;
+}
+
+.google-submit-btn:hover {
+    background: #1557b0;
+    box-shadow: 0 2px 6px rgba(26, 115, 232, 0.35);
+}
+
+/* FOOTER DE PRIVACIDAD GOOGLE */
+.google-modal-footer {
+    padding: 14px 28px 20px;
+    background: #f8f9fa;
+    border-top: 1px solid #f1f3f4;
+}
+
+.google-modal-footer p {
+    font-size: 11.5px;
+    color: #70757a;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.google-modal-footer a {
+    color: #1a73e8;
+    text-decoration: none;
+}
+
+.google-modal-footer a:hover {
+    text-decoration: underline;
+}
+
+/* LOADING OVERLAY DE GOOGLE */
+.google-loading-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(2px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    text-align: center;
+    padding: 24px;
+}
+
+.google-loading-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.google-spinner {
+    width: 44px;
+    height: 44px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #4285f4;
+    border-right: 4px solid #ea4335;
+    border-bottom: 4px solid #fbbc05;
+    border-left: 4px solid #34a853;
+    border-radius: 50%;
+    animation: googleSpin 1s linear infinite;
+    margin-bottom: 16px;
+}
+
+@keyframes googleSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.google-loading-overlay strong {
+    font-size: 15px;
+    color: #202124;
+    margin-bottom: 4px;
+}
+
+.google-loading-overlay p {
+    font-size: 13px;
+    color: #5f6368;
+}
+
+/* ====================================================================
+   ESTILOS DEL MODAL DE RECUPERACIÓN / OBTENCIÓN DE CONTRASEÑA
+   ==================================================================== */
+.recover-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.recover-modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.recover-modal-card {
+    background: #ffffff;
+    max-width: 500px;
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.25), 0 0 1px 1px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+    transform: scale(0.94) translateY(8px);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #1f2937;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.recover-modal-overlay.active .recover-modal-card {
+    transform: scale(1) translateY(0);
+}
+
+.recover-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    z-index: 10;
+}
+
+.recover-modal-close:hover {
+    background: #f3f4f6;
+    color: #111827;
+}
+
+.recover-modal-header {
+    text-align: center;
+    padding: 28px 24px 16px;
+    border-bottom: 1px solid #f3f4f6;
+    background: #fafbfc;
+}
+
+.recover-key-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #fef3c7;
+    color: #d97706;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 10px rgba(217, 119, 6, 0.15);
+}
+
+.recover-modal-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+}
+
+.recover-modal-subtitle {
+    font-size: 13.5px;
+    color: #6b7280;
+    line-height: 1.4;
+    margin-bottom: 16px;
+}
+
+/* Selector de rol dentro del modal */
+.recover-role-switcher {
+    display: flex;
+    background: #e5e7eb;
+    padding: 4px;
+    border-radius: 12px;
+    gap: 6px;
+    max-width: 360px;
+    margin: 0 auto;
+}
+
+.recover-role-btn {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 9px;
+    background: transparent;
+    color: #4b5563;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.recover-role-btn.active {
+    background: #ffffff;
+    color: #1d4ed8;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.recover-role-btn.active[data-recover-role="estudiante"] {
+    color: #15803d;
+}
+
+/* Paneles del cuerpo */
+.recover-body-pane {
+    padding: 22px 26px 26px;
+}
+
+.recover-body-pane.hidden {
+    display: none;
+}
+
+.recover-body-pane label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+.recover-input-wrap {
+    height: 48px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    background: #ffffff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.recover-input-wrap:focus-within {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.recover-input-icon {
+    font-size: 16px;
+    margin-right: 8px;
+    user-select: none;
+}
+
+.recover-input-wrap input {
+    flex: 1;
+    border: none;
+    outline: none;
+    height: 100%;
+    font-size: 14px;
+    color: #111827;
+    background: transparent;
+}
+
+.recover-error {
+    display: block;
+    color: #dc2626;
+    font-size: 12px;
+    margin-top: 5px;
+    min-height: 16px;
+}
+
+/* Sugerencias de cuentas rápidas */
+.quick-suggest-box {
+    margin: 16px 0 20px;
+    background: #f9fafb;
+    border: 1px dashed #e5e7eb;
+    border-radius: 10px;
+    padding: 12px 14px;
+}
+
+.quick-suggest-box span {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #6b7280;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.quick-chips {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.quick-chip {
+    text-align: left;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 12.5px;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.quick-chip:hover {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    color: #1d4ed8;
+}
+
+.recover-submit-btn {
+    width: 100%;
+    height: 48px;
+    background: linear-gradient(135deg, #1d4ed8, #2563eb);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-size: 14.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.recover-submit-btn:hover {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.28);
+}
+
+/* PASO 2: Ficha de cuenta verificada */
+.account-verified-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+}
+
+.verified-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #16a34a;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.verified-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.verified-name-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 2px;
+}
+
+.verified-name-row strong {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #14532d;
+}
+
+.verified-badge-pill {
+    background: #dcfce7;
+    color: #15803d;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1px solid #bbf7d0;
+}
+
+.verified-email {
+    display: block;
+    font-size: 13px;
+    color: #4b5563;
+}
+
+.verified-grade {
+    display: block;
+    font-size: 11.5px;
+    color: #15803d;
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+/* Pestañas de acción en el paso 2 */
+.recover-action-tabs {
+    display: flex;
+    background: #f3f4f6;
+    padding: 4px;
+    border-radius: 10px;
+    gap: 6px;
+    margin-bottom: 18px;
+}
+
+.recover-action-tab {
+    flex: 1;
+    padding: 9px 10px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #4b5563;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.recover-action-tab.active {
+    background: #ffffff;
+    color: #1f2937;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+.recover-subview.hidden {
+    display: none;
+}
+
+/* Sub-vista A: Tarjeta para mostrar la clave actual */
+.password-display-card {
+    background: #fafafa;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.pwd-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.pwd-box {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border: 2px solid #3b82f6;
+    border-radius: 8px;
+    padding: 4px 8px;
+    gap: 8px;
+}
+
+.pwd-box input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-family: monospace;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #1e3a8a;
+    background: transparent;
+}
+
+.btn-toggle-pwd {
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+    transition: background 0.15s ease;
+}
+
+.btn-toggle-pwd:hover {
+    background: #f3f4f6;
+}
+
+.btn-copy-pwd {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+}
+
+.btn-copy-pwd:hover {
+    background: #dbeafe;
+}
+
+.pwd-tip {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 10px;
+    line-height: 1.4;
+}
+
+.recover-login-direct-btn {
+    width: 100%;
+    height: 48px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-size: 14.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s ease, filter 0.15s ease;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    margin-bottom: 12px;
+}
+
+.recover-login-direct-btn:hover {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+}
+
+/* Sub-vista B: Formulario de nueva contraseña */
+.recover-form-group {
+    margin-bottom: 14px;
+}
+
+.recover-back-link {
+    display: inline-block;
+    background: transparent;
+    border: none;
+    color: #4b5563;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 12px;
+    padding: 4px 0;
+}
+
+.recover-back-link:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+/* Overlay de carga para recuperación */
+.recover-loading-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(2px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    text-align: center;
+    padding: 24px;
+}
+
+.recover-loading-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.recover-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f4f6;
+    border-top: 4px solid #2563eb;
+    border-radius: 50%;
+    animation: recoverSpin 0.9s linear infinite;
+    margin-bottom: 14px;
+}
+
+@keyframes recoverSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.recover-loading-overlay strong {
+    font-size: 14.5px;
+    color: #1f2937;
+}
+
+/* ====================================================================
+   ESTILOS DEL MODAL DE CREACIÓN DE CUENTA (REGISTRO DOCENTE / ESTUDIANTE)
+   ==================================================================== */
+.register-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.register-modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.register-modal-card {
+    background: #ffffff;
+    max-width: 540px;
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.25), 0 0 1px 1px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+    transform: scale(0.94) translateY(8px);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #1f2937;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.register-modal-overlay.active .register-modal-card {
+    transform: scale(1) translateY(0);
+}
+
+.register-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    z-index: 10;
+}
+
+.register-modal-close:hover {
+    background: #f3f4f6;
+    color: #111827;
+}
+
+.register-modal-header {
+    text-align: center;
+    padding: 28px 24px 16px;
+    border-bottom: 1px solid #f3f4f6;
+    background: #fafbfc;
+}
+
+.register-header-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #e0f2fe;
+    color: #0284c7;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 10px rgba(2, 132, 199, 0.15);
+    transition: all 0.25s ease;
+}
+
+.register-header-icon.estudiante-mode {
+    background: #dcfce7;
+    color: #16a34a;
+    box-shadow: 0 4px 10px rgba(22, 163, 74, 0.15);
+}
+
+.register-modal-header h2 {
+    font-size: 23px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+}
+
+.register-modal-subtitle {
+    font-size: 13.5px;
+    color: #6b7280;
+    line-height: 1.4;
+    margin-bottom: 16px;
+}
+
+/* Selector de rol de registro */
+.register-role-switcher {
+    display: flex;
+    background: #e5e7eb;
+    padding: 4px;
+    border-radius: 12px;
+    gap: 6px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.register-role-btn {
+    flex: 1;
+    padding: 9px 14px;
+    border: none;
+    border-radius: 9px;
+    background: transparent;
+    color: #4b5563;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.register-role-btn.active {
+    background: #ffffff;
+    color: #1d4ed8;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.register-role-btn.active[data-reg-role="estudiante"] {
+    color: #15803d;
+}
+
+/* Cuerpo del formulario de registro */
+.register-body-pane {
+    padding: 24px 28px 28px;
+}
+
+.reg-form-group {
+    margin-bottom: 16px;
+}
+
+.reg-form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 6px;
+}
+
+.req-star {
+    color: #dc2626;
+    font-weight: 700;
+}
+
+.label-hint {
+    font-weight: normal;
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.reg-input-wrap {
+    height: 48px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    background: #ffffff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.reg-input-wrap:focus-within {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.reg-input-wrap.student-focused:focus-within {
+    border-color: #16a34a;
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12);
+}
+
+.reg-input-icon {
+    font-size: 16px;
+    margin-right: 10px;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.reg-input-wrap input {
+    flex: 1;
+    border: none;
+    outline: none;
+    height: 100%;
+    font-size: 14px;
+    color: #111827;
+    background: transparent;
+    min-width: 0;
+}
+
+.reg-select {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: #111827;
+    background: transparent;
+    cursor: pointer;
+}
+
+.reg-help-text {
+    display: block;
+    font-size: 11.5px;
+    color: #059669;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+.reg-form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+@media (max-width: 520px) {
+    .reg-form-grid-2 {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}
+
+.reg-error {
+    display: block;
+    color: #dc2626;
+    font-size: 12px;
+    margin-top: 4px;
+    min-height: 16px;
+}
+
+.reg-general-error {
+    color: #dc2626;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    margin-bottom: 16px;
+    display: none;
+}
+
+.reg-general-error.active {
+    display: block;
+}
+
+.role-specific-fields.hidden {
+    display: none;
+}
+
+.register-submit-btn {
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(135deg, #1d4ed8, #2563eb);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    margin-top: 6px;
+}
+
+.register-submit-btn.student-theme {
+    background: linear-gradient(135deg, #15803d, #16a34a);
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+}
+
+.register-submit-btn:hover {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+}
+
+.reg-login-link-box {
+    text-align: center;
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 18px;
+}
+
+.reg-login-link-box button {
+    background: transparent;
+    border: none;
+    color: #2563eb;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 4px;
+}
+
+.reg-login-link-box button:hover {
+    text-decoration: underline;
+}
+
+/* Loading overlay para Registro */
+.register-loading-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(2px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    text-align: center;
+    padding: 24px;
+}
+
+.register-loading-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.register-spinner {
+    width: 44px;
+    height: 44px;
+    border: 4px solid #f3f4f6;
+    border-top: 4px solid #2563eb;
+    border-radius: 50%;
+    animation: regSpin 0.9s linear infinite;
+    margin-bottom: 16px;
+}
+
+@keyframes regSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.register-loading-overlay strong {
+    font-size: 15px;
+    color: #111827;
+    margin-bottom: 4px;
+}
+
+.register-loading-overlay p {
+    font-size: 13px;
+    color: #6b7280;
+}
+

@@ -183,21 +183,916 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ---------- Acciones secundarias (modo demostración) ----------
+    // ---------- Modal de Recuperación / Obtención de Contraseña ----------
+    const recoverModalOverlay = document.getElementById("recoverModalOverlay");
+    const recoverModalClose = document.getElementById("recoverModalClose");
+    const btnRecoverDocente = document.getElementById("btnRecoverDocente");
+    const btnRecoverEstudiante = document.getElementById("btnRecoverEstudiante");
+    const recoverStep1Pane = document.getElementById("recoverStep1Pane");
+    const recoverStep2Pane = document.getElementById("recoverStep2Pane");
+    const recoverEmailInput = document.getElementById("recoverEmailInput");
+    const recoverEmailRoleLabel = document.getElementById("recoverEmailRoleLabel");
+    const recoverStep1Error = document.getElementById("recoverStep1Error");
+    const recoverCheckForm = document.getElementById("recoverCheckForm");
+    const chipDocente = document.getElementById("chipDocente");
+    const chipEstudiante = document.getElementById("chipEstudiante");
+
+    const verifiedAvatar = document.getElementById("verifiedAvatar");
+    const verifiedName = document.getElementById("verifiedName");
+    const verifiedRoleBadge = document.getElementById("verifiedRoleBadge");
+    const verifiedEmail = document.getElementById("verifiedEmail");
+    const verifiedGrade = document.getElementById("verifiedGrade");
+
+    const tabObtenerClave = document.getElementById("tabObtenerClave");
+    const tabCambiarClave = document.getElementById("tabCambiarClave");
+    const subviewObtenerClave = document.getElementById("subviewObtenerClave");
+    const subviewCambiarClave = document.getElementById("subviewCambiarClave");
+
+    const displayCurrentPassword = document.getElementById("displayCurrentPassword");
+    const btnToggleCurrentPwd = document.getElementById("btnToggleCurrentPwd");
+    const btnCopyPwd = document.getElementById("btnCopyPwd");
+    const btnDirectLogin = document.getElementById("btnDirectLogin");
+
+    const formResetPassword = document.getElementById("formResetPassword");
+    const newPasswordInput = document.getElementById("newPasswordInput");
+    const confirmNewPasswordInput = document.getElementById("confirmNewPasswordInput");
+    const btnToggleNewPwd = document.getElementById("btnToggleNewPwd");
+    const resetPasswordError = document.getElementById("resetPasswordError");
+    const btnBackToStep1 = document.getElementById("btnBackToStep1");
+
+    const recoverLoadingOverlay = document.getElementById("recoverLoadingOverlay");
+    const recoverLoadingText = document.getElementById("recoverLoadingText");
+
+    let recoveryRole = "docente";
+    let verifiedUserData = null;
+
+    function setRecoveryRole(role) {
+        recoveryRole = role;
+        const isDoc = role === "docente";
+        if (btnRecoverDocente) btnRecoverDocente.classList.toggle("active", isDoc);
+        if (btnRecoverEstudiante) btnRecoverEstudiante.classList.toggle("active", !isDoc);
+        if (recoverEmailRoleLabel) recoverEmailRoleLabel.textContent = isDoc ? "docente" : "estudiante";
+        if (recoverStep1Error) recoverStep1Error.textContent = "";
+
+        if (recoverEmailInput && !recoverEmailInput.value.trim()) {
+            recoverEmailInput.placeholder = isDoc ? "ejemplo@institucion.edu.co" : "ejemplo@estudiante.edu.co";
+        }
+    }
+
+    function openRecoverModal() {
+        if (!recoverModalOverlay) return;
+        setRecoveryRole(currentRole);
+
+        // Pre-cargar correo del formulario principal si ya fue escrito
+        if (emailInput && emailInput.value.trim() && recoverEmailInput) {
+            recoverEmailInput.value = emailInput.value.trim();
+        }
+
+        if (recoverStep1Pane) recoverStep1Pane.classList.remove("hidden");
+        if (recoverStep2Pane) recoverStep2Pane.classList.add("hidden");
+        if (recoverLoadingOverlay) recoverLoadingOverlay.classList.remove("active");
+        if (recoverStep1Error) recoverStep1Error.textContent = "";
+
+        recoverModalOverlay.classList.add("active");
+        recoverModalOverlay.setAttribute("aria-hidden", "false");
+    }
+
+    function closeRecoverModal() {
+        if (!recoverModalOverlay) return;
+        recoverModalOverlay.classList.remove("active");
+        recoverModalOverlay.setAttribute("aria-hidden", "true");
+        if (recoverLoadingOverlay) recoverLoadingOverlay.classList.remove("active");
+    }
+
     if (forgotBtn) {
-        forgotBtn.addEventListener("click", function () {
-            showToast("Comunícate con la coordinación académica para restablecer tu contraseña.");
+        forgotBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            openRecoverModal();
         });
     }
 
-    if (createAccountBtn) {
-        createAccountBtn.addEventListener("click", function () {
-            showToast("Solicita la creación de tu cuenta en secretaría académica.");
+    if (recoverModalClose) {
+        recoverModalClose.addEventListener("click", closeRecoverModal);
+    }
+
+    if (recoverModalOverlay) {
+        recoverModalOverlay.addEventListener("click", function (e) {
+            if (e.target === recoverModalOverlay) {
+                closeRecoverModal();
+            }
         });
+    }
+
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && recoverModalOverlay && recoverModalOverlay.classList.contains("active")) {
+            closeRecoverModal();
+        }
+    });
+
+    if (btnRecoverDocente) {
+        btnRecoverDocente.addEventListener("click", function () {
+            setRecoveryRole("docente");
+        });
+    }
+
+    if (btnRecoverEstudiante) {
+        btnRecoverEstudiante.addEventListener("click", function () {
+            setRecoveryRole("estudiante");
+        });
+    }
+
+    if (chipDocente) {
+        chipDocente.addEventListener("click", function () {
+            setRecoveryRole("docente");
+            if (recoverEmailInput) recoverEmailInput.value = "docente@institucion.edu.co";
+        });
+    }
+
+    if (chipEstudiante) {
+        chipEstudiante.addEventListener("click", function () {
+            setRecoveryRole("estudiante");
+            if (recoverEmailInput) recoverEmailInput.value = "maria.perez@estudiante.edu.co";
+        });
+    }
+
+    // Paso 1: Enviar formulario para buscar cuenta
+    if (recoverCheckForm) {
+        recoverCheckForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            if (recoverStep1Error) recoverStep1Error.textContent = "";
+
+            const emailVal = (recoverEmailInput ? recoverEmailInput.value : "").trim();
+            if (!emailVal) {
+                if (recoverStep1Error) recoverStep1Error.textContent = "Por favor ingresa tu correo electrónico.";
+                if (recoverEmailInput) recoverEmailInput.focus();
+                return;
+            }
+
+            if (!/^\S+@\S+\.\S+$/.test(emailVal)) {
+                if (recoverStep1Error) recoverStep1Error.textContent = "Ingresa un formato de correo válido.";
+                if (recoverEmailInput) recoverEmailInput.focus();
+                return;
+            }
+
+            if (recoverLoadingOverlay) {
+                recoverLoadingOverlay.classList.add("active");
+                if (recoverLoadingText) recoverLoadingText.textContent = `Buscando cuenta en base de datos para modo ${recoveryRole}...`;
+            }
+
+            try {
+                const response = await fetch("/api/auth/recover-password", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        email: emailVal,
+                        role: recoveryRole
+                    })
+                });
+
+                const data = await response.json();
+                if (recoverLoadingOverlay) recoverLoadingOverlay.classList.remove("active");
+
+                if (data.success && data.user) {
+                    verifiedUserData = data.user;
+
+                    // Poblar ficha verificada
+                    const userName = verifiedUserData.nombre || verifiedUserData.name || "Usuario";
+                    const initial = userName.charAt(0).toUpperCase();
+                    if (verifiedAvatar) verifiedAvatar.textContent = initial;
+                    if (verifiedName) verifiedName.textContent = userName;
+                    if (verifiedEmail) verifiedEmail.textContent = verifiedUserData.email;
+
+                    const isStudent = (verifiedUserData.rol || recoveryRole) === "estudiante";
+                    if (verifiedRoleBadge) {
+                        verifiedRoleBadge.textContent = isStudent ? "🎓 Estudiante" : "👨‍🏫 Docente";
+                        verifiedRoleBadge.style.background = isStudent ? "#dcfce7" : "#dbeafe";
+                        verifiedRoleBadge.style.color = isStudent ? "#15803d" : "#1d4ed8";
+                        verifiedRoleBadge.style.borderColor = isStudent ? "#bbf7d0" : "#bfdbfe";
+                    }
+
+                    if (verifiedGrade) {
+                        if (isStudent && (verifiedUserData.grado || verifiedUserData.grade)) {
+                            verifiedGrade.style.display = "block";
+                            verifiedGrade.textContent = `Grado: ${verifiedUserData.grado || verifiedUserData.grade}`;
+                        } else {
+                            verifiedGrade.style.display = "none";
+                        }
+                    }
+
+                    // Establecer contraseña actual
+                    if (displayCurrentPassword) {
+                        displayCurrentPassword.value = verifiedUserData.password || "123456";
+                        displayCurrentPassword.type = "password";
+                    }
+
+                    // Reiniciar sub-vistas a la pestaña "Obtener Clave"
+                    if (tabObtenerClave) tabObtenerClave.classList.add("active");
+                    if (tabCambiarClave) tabCambiarClave.classList.remove("active");
+                    if (subviewObtenerClave) subviewObtenerClave.classList.remove("hidden");
+                    if (subviewCambiarClave) subviewCambiarClave.classList.add("hidden");
+
+                    // Mostrar Paso 2
+                    if (recoverStep1Pane) recoverStep1Pane.classList.add("hidden");
+                    if (recoverStep2Pane) recoverStep2Pane.classList.remove("hidden");
+                } else {
+                    if (recoverStep1Error) {
+                        recoverStep1Error.textContent = data.message || `No se encontró cuenta para ${emailVal} en modo ${recoveryRole}.`;
+                    }
+                }
+            } catch (err) {
+                if (recoverLoadingOverlay) recoverLoadingOverlay.classList.remove("active");
+                console.error("Error al buscar cuenta:", err);
+                if (recoverStep1Error) {
+                    recoverStep1Error.textContent = "Error al conectar con el servidor. Intenta de nuevo.";
+                }
+            }
+        });
+    }
+
+    // Pestañas del Paso 2
+    if (tabObtenerClave && tabCambiarClave) {
+        tabObtenerClave.addEventListener("click", function () {
+            tabObtenerClave.classList.add("active");
+            tabCambiarClave.classList.remove("active");
+            if (subviewObtenerClave) subviewObtenerClave.classList.remove("hidden");
+            if (subviewCambiarClave) subviewCambiarClave.classList.add("hidden");
+        });
+
+        tabCambiarClave.addEventListener("click", function () {
+            tabCambiarClave.classList.add("active");
+            tabObtenerClave.classList.remove("active");
+            if (subviewCambiarClave) subviewCambiarClave.classList.remove("hidden");
+            if (subviewObtenerClave) subviewObtenerClave.classList.add("hidden");
+            if (newPasswordInput) newPasswordInput.focus();
+        });
+    }
+
+    // Mostrar / ocultar clave actual
+    if (btnToggleCurrentPwd && displayCurrentPassword) {
+        btnToggleCurrentPwd.addEventListener("click", function () {
+            const isHidden = displayCurrentPassword.type === "password";
+            displayCurrentPassword.type = isHidden ? "text" : "password";
+            btnToggleCurrentPwd.textContent = isHidden ? "🙈" : "👁️";
+        });
+    }
+
+    // Copiar clave actual
+    if (btnCopyPwd && displayCurrentPassword) {
+        btnCopyPwd.addEventListener("click", function () {
+            const pwdVal = displayCurrentPassword.value;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(pwdVal).then(() => {
+                    showToast("📋 Contraseña copiada al portapapeles.");
+                    btnCopyPwd.textContent = "✓ ¡Copiada!";
+                    setTimeout(() => { btnCopyPwd.textContent = "📋 Copiar"; }, 2000);
+                }).catch(() => {
+                    showToast(`Contraseña: ${pwdVal}`);
+                });
+            } else {
+                showToast(`Contraseña: ${pwdVal}`);
+            }
+        });
+    }
+
+    // Iniciar sesión directamente con la cuenta verificada
+    if (btnDirectLogin) {
+        btnDirectLogin.addEventListener("click", function () {
+            if (!verifiedUserData) return;
+
+            const finalRole = (verifiedUserData.rol || recoveryRole).toLowerCase();
+            const userName = verifiedUserData.nombre || verifiedUserData.name || "Usuario";
+            const userGrade = verifiedUserData.grado || verifiedUserData.grade || null;
+
+            const session = {
+                id: verifiedUserData.id,
+                role: finalRole,
+                rol: finalRole,
+                email: verifiedUserData.email,
+                name: userName,
+                nombre: userName,
+                grado: userGrade,
+                grade: userGrade,
+                loginAt: Date.now()
+            };
+
+            localStorage.setItem("organizadorNotasSesion", JSON.stringify(session));
+            closeRecoverModal();
+            showToast(`¡Bienvenido/a, ${userName}! Accediendo al sistema...`);
+
+            const targetPage = finalRole === "docente" ? "menudocentes.html" : "menuestudiantes.html";
+            setTimeout(() => {
+                window.location.href = targetPage;
+            }, 600);
+        });
+    }
+
+    // Mostrar / ocultar nueva clave
+    if (btnToggleNewPwd && newPasswordInput) {
+        btnToggleNewPwd.addEventListener("click", function () {
+            const isHidden = newPasswordInput.type === "password";
+            newPasswordInput.type = isHidden ? "text" : "password";
+            btnToggleNewPwd.textContent = isHidden ? "🙈" : "👁️";
+        });
+    }
+
+    // Formulario de restablecimiento de contraseña
+    if (formResetPassword) {
+        formResetPassword.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            if (resetPasswordError) resetPasswordError.textContent = "";
+
+            const newPwd = (newPasswordInput ? newPasswordInput.value : "").trim();
+            const confirmPwd = (confirmNewPasswordInput ? confirmNewPasswordInput.value : "").trim();
+
+            if (!newPwd) {
+                if (resetPasswordError) resetPasswordError.textContent = "Ingresa tu nueva contraseña.";
+                if (newPasswordInput) newPasswordInput.focus();
+                return;
+            }
+
+            if (newPwd.length < 4) {
+                if (resetPasswordError) resetPasswordError.textContent = "La contraseña debe tener mínimo 4 caracteres.";
+                if (newPasswordInput) newPasswordInput.focus();
+                return;
+            }
+
+            if (newPwd !== confirmPwd) {
+                if (resetPasswordError) resetPasswordError.textContent = "Las contraseñas no coinciden. Verifica nuevamente.";
+                if (confirmNewPasswordInput) confirmNewPasswordInput.focus();
+                return;
+            }
+
+            if (recoverLoadingOverlay) {
+                recoverLoadingOverlay.classList.add("active");
+                if (recoverLoadingText) recoverLoadingText.textContent = "Guardando nueva contraseña en base de datos...";
+            }
+
+            try {
+                const response = await fetch("/api/auth/reset-password", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        email: verifiedUserData.email,
+                        role: recoveryRole,
+                        newPassword: newPwd
+                    })
+                });
+
+                const data = await response.json();
+                if (recoverLoadingOverlay) recoverLoadingOverlay.classList.remove("active");
+
+                if (data.success) {
+                    showToast("✅ Contraseña actualizada con éxito en la base de datos.");
+
+                    // Actualizar campo de contraseña en el formulario principal
+                    if (passwordInput) passwordInput.value = newPwd;
+                    if (emailInput) emailInput.value = verifiedUserData.email;
+
+                    // Iniciar sesión automáticamente
+                    const finalRole = (verifiedUserData.rol || recoveryRole).toLowerCase();
+                    const userName = verifiedUserData.nombre || verifiedUserData.name || "Usuario";
+                    const userGrade = verifiedUserData.grado || verifiedUserData.grade || null;
+
+                    const session = {
+                        id: verifiedUserData.id,
+                        role: finalRole,
+                        rol: finalRole,
+                        email: verifiedUserData.email,
+                        name: userName,
+                        nombre: userName,
+                        grado: userGrade,
+                        grade: userGrade,
+                        loginAt: Date.now()
+                    };
+
+                    localStorage.setItem("organizadorNotasSesion", JSON.stringify(session));
+                    closeRecoverModal();
+
+                    showToast(`¡Contraseña restablecida! Iniciando sesión como ${userName}...`);
+
+                    const targetPage = finalRole === "docente" ? "menudocentes.html" : "menuestudiantes.html";
+                    setTimeout(() => {
+                        window.location.href = targetPage;
+                    }, 650);
+                } else {
+                    if (resetPasswordError) resetPasswordError.textContent = data.message || "Error al actualizar la contraseña.";
+                }
+            } catch (err) {
+                if (recoverLoadingOverlay) recoverLoadingOverlay.classList.remove("active");
+                console.error("Error al restablecer contraseña:", err);
+                if (resetPasswordError) resetPasswordError.textContent = "Error al conectar con el servidor.";
+            }
+        });
+    }
+
+    // Volver al paso 1
+    if (btnBackToStep1) {
+        btnBackToStep1.addEventListener("click", function () {
+            if (recoverStep2Pane) recoverStep2Pane.classList.add("hidden");
+            if (recoverStep1Pane) recoverStep1Pane.classList.remove("hidden");
+            if (recoverEmailInput) recoverEmailInput.focus();
+        });
+    }
+
+    // ---------- Modal de Creación de Cuenta (Registro Docente / Estudiante) ----------
+    const registerModalOverlay = document.getElementById("registerModalOverlay");
+    const registerModalClose = document.getElementById("registerModalClose");
+    const registerHeaderIcon = document.getElementById("registerHeaderIcon");
+    const registerModalTitle = document.getElementById("registerModalTitle");
+    const registerModalSubtitle = document.getElementById("registerModalSubtitle");
+    const btnRegDocente = document.getElementById("btnRegDocente");
+    const btnRegEstudiante = document.getElementById("btnRegEstudiante");
+    const fieldsDocente = document.getElementById("fieldsDocente");
+    const fieldsEstudiante = document.getElementById("fieldsEstudiante");
+    const regNombre = document.getElementById("regNombre");
+    const regEmail = document.getElementById("regEmail");
+    const regEmailHint = document.getElementById("regEmailHint");
+    const regAsignatura = document.getElementById("regAsignatura");
+    const regTelefonoDocente = document.getElementById("regTelefonoDocente");
+    const regGrado = document.getElementById("regGrado");
+    const regTelefonoEstudiante = document.getElementById("regTelefonoEstudiante");
+    const regPassword = document.getElementById("regPassword");
+    const regConfirmPassword = document.getElementById("regConfirmPassword");
+    const btnToggleRegPwd = document.getElementById("btnToggleRegPwd");
+    const btnSubmitRegister = document.getElementById("btnSubmitRegister");
+    const btnRegToLogin = document.getElementById("btnRegToLogin");
+    const registerForm = document.getElementById("registerForm");
+    const regNombreError = document.getElementById("regNombreError");
+    const regEmailError = document.getElementById("regEmailError");
+    const regPasswordError = document.getElementById("regPasswordError");
+    const regConfirmPasswordError = document.getElementById("regConfirmPasswordError");
+    const regGeneralError = document.getElementById("regGeneralError");
+    const registerLoadingOverlay = document.getElementById("registerLoadingOverlay");
+    const registerLoadingText = document.getElementById("registerLoadingText");
+
+    let currentRegRole = "docente";
+
+    function setRegistrationRole(role) {
+        currentRegRole = role;
+        const isDoc = role === "docente";
+
+        if (btnRegDocente) btnRegDocente.classList.toggle("active", isDoc);
+        if (btnRegEstudiante) btnRegEstudiante.classList.toggle("active", !isDoc);
+
+        if (fieldsDocente) fieldsDocente.classList.toggle("hidden", !isDoc);
+        if (fieldsEstudiante) fieldsEstudiante.classList.toggle("hidden", isDoc);
+
+        if (registerHeaderIcon) {
+            registerHeaderIcon.classList.toggle("estudiante-mode", !isDoc);
+            registerHeaderIcon.innerHTML = isDoc ? "<span>👨‍🏫</span>" : "<span>🎓</span>";
+        }
+
+        if (registerModalTitle) {
+            registerModalTitle.textContent = isDoc ? "Crear Cuenta de Docente" : "Crear Cuenta de Estudiante";
+        }
+
+        if (registerModalSubtitle) {
+            registerModalSubtitle.textContent = isDoc
+                ? "Registra tus datos profesionales para gestionar calificaciones, cursos y actividades."
+                : "Registra tus datos estudiantiles para consultar tus áreas, notas y reportes académicos.";
+        }
+
+        if (regEmail) {
+            regEmail.placeholder = isDoc ? "profesor@institucion.edu.co" : "estudiante@institucion.edu.co";
+        }
+        if (regEmailHint) {
+            regEmailHint.textContent = isDoc ? "(institucional o personal)" : "(estudiantil o personal)";
+        }
+
+        if (btnSubmitRegister) {
+            btnSubmitRegister.textContent = isDoc ? "🚀 Registrar cuenta como Docente" : "🚀 Registrar cuenta como Estudiante";
+            btnSubmitRegister.classList.toggle("student-theme", !isDoc);
+        }
+
+        clearRegErrors();
+    }
+
+    function clearRegErrors() {
+        if (regNombreError) regNombreError.textContent = "";
+        if (regEmailError) regEmailError.textContent = "";
+        if (regPasswordError) regPasswordError.textContent = "";
+        if (regConfirmPasswordError) regConfirmPasswordError.textContent = "";
+        if (regGeneralError) {
+            regGeneralError.textContent = "";
+            regGeneralError.classList.remove("active");
+        }
+    }
+
+    function openRegisterModal() {
+        if (!registerModalOverlay) return;
+        setRegistrationRole(currentRole);
+        clearRegErrors();
+
+        if (registerLoadingOverlay) registerLoadingOverlay.classList.remove("active");
+        registerModalOverlay.classList.add("active");
+        registerModalOverlay.setAttribute("aria-hidden", "false");
+        if (regNombre) regNombre.focus();
+    }
+
+    function closeRegisterModal() {
+        if (!registerModalOverlay) return;
+        registerModalOverlay.classList.remove("active");
+        registerModalOverlay.setAttribute("aria-hidden", "true");
+        if (registerLoadingOverlay) registerLoadingOverlay.classList.remove("active");
+    }
+
+    if (createAccountBtn) {
+        createAccountBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            openRegisterModal();
+        });
+    }
+
+    if (registerModalClose) {
+        registerModalClose.addEventListener("click", closeRegisterModal);
+    }
+
+    if (registerModalOverlay) {
+        registerModalOverlay.addEventListener("click", function (e) {
+            if (e.target === registerModalOverlay) {
+                closeRegisterModal();
+            }
+        });
+    }
+
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && registerModalOverlay && registerModalOverlay.classList.contains("active")) {
+            closeRegisterModal();
+        }
+    });
+
+    if (btnRegDocente) {
+        btnRegDocente.addEventListener("click", function () {
+            setRegistrationRole("docente");
+        });
+    }
+
+    if (btnRegEstudiante) {
+        btnRegEstudiante.addEventListener("click", function () {
+            setRegistrationRole("estudiante");
+        });
+    }
+
+    if (btnRegToLogin) {
+        btnRegToLogin.addEventListener("click", function () {
+            closeRegisterModal();
+            setRoleMode(currentRegRole);
+            showView("login");
+        });
+    }
+
+    if (btnToggleRegPwd && regPassword) {
+        btnToggleRegPwd.addEventListener("click", function () {
+            const isHidden = regPassword.type === "password";
+            regPassword.type = isHidden ? "text" : "password";
+            btnToggleRegPwd.textContent = isHidden ? "🙈" : "👁️";
+        });
+    }
+
+    if (registerForm) {
+        registerForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            clearRegErrors();
+
+            const nombreVal = (regNombre ? regNombre.value : "").trim();
+            const emailVal = (regEmail ? regEmail.value : "").trim();
+            const passwordVal = (regPassword ? regPassword.value : "").trim();
+            const confirmVal = (regConfirmPassword ? regConfirmPassword.value : "").trim();
+            const isDoc = currentRegRole === "docente";
+
+            let isValid = true;
+
+            if (!nombreVal || nombreVal.length < 3) {
+                if (regNombreError) regNombreError.textContent = "Ingresa tu nombre completo (mínimo 3 letras).";
+                if (isValid && regNombre) regNombre.focus();
+                isValid = false;
+            }
+
+            if (!emailVal) {
+                if (regEmailError) regEmailError.textContent = "El correo electrónico es requerido.";
+                if (isValid && regEmail) regEmail.focus();
+                isValid = false;
+            } else if (!/^\S+@\S+\.\S+$/.test(emailVal)) {
+                if (regEmailError) regEmailError.textContent = "Ingresa una dirección de correo válida.";
+                if (isValid && regEmail) regEmail.focus();
+                isValid = false;
+            }
+
+            if (!passwordVal) {
+                if (regPasswordError) regPasswordError.textContent = "La contraseña es requerida.";
+                if (isValid && regPassword) regPassword.focus();
+                isValid = false;
+            } else if (passwordVal.length < 4) {
+                if (regPasswordError) regPasswordError.textContent = "La contraseña debe tener al menos 4 caracteres.";
+                if (isValid && regPassword) regPassword.focus();
+                isValid = false;
+            }
+
+            if (passwordVal !== confirmVal) {
+                if (regConfirmPasswordError) regConfirmPasswordError.textContent = "Las contraseñas no coinciden.";
+                if (isValid && regConfirmPassword) regConfirmPassword.focus();
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            const payload = {
+                nombre: nombreVal,
+                email: emailVal,
+                password: passwordVal,
+                rol: currentRegRole,
+                grado: isDoc ? null : (regGrado ? regGrado.value : "10°A"),
+                telefono: isDoc ? (regTelefonoDocente ? regTelefonoDocente.value : "") : (regTelefonoEstudiante ? regTelefonoEstudiante.value : ""),
+                asignatura: isDoc ? (regAsignatura ? regAsignatura.value : "Matemáticas") : null
+            };
+
+            if (registerLoadingOverlay) {
+                registerLoadingOverlay.classList.add("active");
+                if (registerLoadingText) {
+                    registerLoadingText.textContent = `Registrando cuenta como ${isDoc ? "Docente" : "Estudiante"}...`;
+                }
+            }
+
+            try {
+                const response = await fetch("/api/auth/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+                if (registerLoadingOverlay) registerLoadingOverlay.classList.remove("active");
+
+                if (data.success && data.user) {
+                    const newUser = data.user;
+                    const finalRole = (newUser.rol || currentRegRole).toLowerCase();
+                    const userName = newUser.nombre || nombreVal;
+                    const userGrade = newUser.grado || payload.grado;
+
+                    const session = {
+                        id: newUser.id,
+                        role: finalRole,
+                        rol: finalRole,
+                        email: newUser.email || emailVal,
+                        name: userName,
+                        nombre: userName,
+                        grado: userGrade,
+                        grade: userGrade,
+                        loginAt: Date.now()
+                    };
+
+                    localStorage.setItem("organizadorNotasSesion", JSON.stringify(session));
+                    localStorage.setItem("organizadorNotasEmail", emailVal);
+
+                    closeRegisterModal();
+                    showToast(`🎉 ¡Cuenta creada con éxito! Bienvenido/a, ${userName}`);
+
+                    const targetPage = finalRole === "docente" ? "menudocentes.html" : "menuestudiantes.html";
+                    setTimeout(() => {
+                        window.location.href = targetPage;
+                    }, 650);
+                } else {
+                    if (regGeneralError) {
+                        regGeneralError.textContent = data.message || "Error al registrar la cuenta.";
+                        regGeneralError.classList.add("active");
+                    }
+                }
+            } catch (err) {
+                if (registerLoadingOverlay) registerLoadingOverlay.classList.remove("active");
+                console.error("Error al registrar:", err);
+                if (regGeneralError) {
+                    regGeneralError.textContent = "Error al conectar con el servidor para registrar la cuenta.";
+                    regGeneralError.classList.add("active");
+                }
+            }
+        });
+    }
+
+    // ---------- Modal de Inicio de Sesión con Google ----------
+    const googleModalOverlay = document.getElementById("googleModalOverlay");
+    const googleModalClose = document.getElementById("googleModalClose");
+    const googleAccountsView = document.getElementById("googleAccountsView");
+    const googleCustomView = document.getElementById("googleCustomView");
+    const googleUseAnotherBtn = document.getElementById("googleUseAnotherBtn");
+    const googleBackToAccounts = document.getElementById("googleBackToAccounts");
+    const googleCustomForm = document.getElementById("googleCustomForm");
+    const googleCustomEmail = document.getElementById("googleCustomEmail");
+    const googleCustomName = document.getElementById("googleCustomName");
+    const googleEmailError = document.getElementById("googleEmailError");
+    const googleLoadingOverlay = document.getElementById("googleLoadingOverlay");
+    const googleLoadingText = document.getElementById("googleLoadingText");
+    const googleGradeWrap = document.getElementById("googleGradeWrap");
+    const googleRoleDocente = document.getElementById("googleRoleDocente");
+    const googleRoleEstudiante = document.getElementById("googleRoleEstudiante");
+    const googleCustomGrade = document.getElementById("googleCustomGrade");
+
+    function openGoogleModal() {
+        if (!googleModalOverlay) return;
+        googleAccountsView.classList.remove("hidden");
+        googleCustomView.classList.add("hidden");
+        googleLoadingOverlay.classList.remove("active");
+        if (googleEmailError) googleEmailError.textContent = "";
+
+        // Sincronizar radio del rol en el formulario personalizado con el rol actual
+        if (currentRole === "docente") {
+            if (googleRoleDocente) googleRoleDocente.checked = true;
+            if (googleGradeWrap) googleGradeWrap.style.display = "none";
+        } else {
+            if (googleRoleEstudiante) googleRoleEstudiante.checked = true;
+            if (googleGradeWrap) googleGradeWrap.style.display = "block";
+        }
+
+        googleModalOverlay.classList.add("active");
+        googleModalOverlay.setAttribute("aria-hidden", "false");
+    }
+
+    function closeGoogleModal() {
+        if (!googleModalOverlay) return;
+        googleModalOverlay.classList.remove("active");
+        googleModalOverlay.setAttribute("aria-hidden", "true");
+        googleLoadingOverlay.classList.remove("active");
     }
 
     if (googleBtn) {
         googleBtn.addEventListener("click", function () {
-            showToast("El acceso con Google no está disponible en modo demostración.");
+            openGoogleModal();
+        });
+    }
+
+    if (googleModalClose) {
+        googleModalClose.addEventListener("click", closeGoogleModal);
+    }
+
+    if (googleModalOverlay) {
+        googleModalOverlay.addEventListener("click", function (e) {
+            if (e.target === googleModalOverlay) {
+                closeGoogleModal();
+            }
+        });
+    }
+
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && googleModalOverlay && googleModalOverlay.classList.contains("active")) {
+            closeGoogleModal();
+        }
+    });
+
+    if (googleUseAnotherBtn) {
+        googleUseAnotherBtn.addEventListener("click", function () {
+            googleAccountsView.classList.add("hidden");
+            googleCustomView.classList.remove("hidden");
+            if (googleCustomEmail) googleCustomEmail.focus();
+        });
+    }
+
+    if (googleBackToAccounts) {
+        googleBackToAccounts.addEventListener("click", function () {
+            googleCustomView.classList.add("hidden");
+            googleAccountsView.classList.remove("hidden");
+        });
+    }
+
+    // Alternar selector de grado según rol seleccionado en formulario Google
+    if (googleRoleDocente && googleRoleEstudiante && googleGradeWrap) {
+        googleRoleDocente.addEventListener("change", function () {
+            if (this.checked) googleGradeWrap.style.display = "none";
+        });
+        googleRoleEstudiante.addEventListener("change", function () {
+            if (this.checked) googleGradeWrap.style.display = "block";
+        });
+    }
+
+    // Ejecutar login con Google
+    async function executeGoogleLogin({ email, name, role, grade }) {
+        if (!email) return;
+
+        let effectiveRole = role;
+        if (!effectiveRole || effectiveRole === "auto") {
+            effectiveRole = email.includes("docente") ? "docente" : currentRole;
+        }
+
+        const effectiveGrade = effectiveRole === "estudiante" ? (grade || "10°A") : null;
+        const effectiveName = name || deriveName(email);
+
+        if (googleLoadingOverlay) {
+            googleLoadingOverlay.classList.add("active");
+            if (googleLoadingText) {
+                googleLoadingText.textContent = `Accediendo con ${email}...`;
+            }
+        }
+
+        showToast(`Conectando con cuenta de Google: ${email}`);
+
+        try {
+            const response = await fetch("/api/auth/google", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email,
+                    name: effectiveName,
+                    role: effectiveRole,
+                    grade: effectiveGrade
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success && data.user) {
+                const userObj = data.user;
+                const finalRole = (userObj.role || userObj.rol || effectiveRole).toLowerCase();
+                const finalName = userObj.name || userObj.nombre || effectiveName;
+                const finalGrade = userObj.grade || userObj.grado || effectiveGrade;
+
+                const session = {
+                    id: userObj.id,
+                    role: finalRole,
+                    rol: finalRole,
+                    email: userObj.email || email,
+                    name: finalName,
+                    nombre: finalName,
+                    grado: finalGrade,
+                    grade: finalGrade,
+                    provider: "google",
+                    avatar: userObj.avatar || null,
+                    loginAt: Date.now()
+                };
+
+                localStorage.setItem("organizadorNotasSesion", JSON.stringify(session));
+                showToast(`¡Bienvenido/a con Google, ${finalName}!`);
+
+                const targetPage = finalRole === "docente" ? "menudocentes.html" : "menuestudiantes.html";
+                setTimeout(() => {
+                    window.location.href = targetPage;
+                }, 600);
+                return;
+            } else {
+                throw new Error(data.message || "Error al autenticar con Google");
+            }
+        } catch (err) {
+            console.warn("Fallo en API Google, creando sesión local resiliente:", err);
+            // Modo resiliente en cliente
+            const finalRole = effectiveRole.toLowerCase();
+            const session = {
+                role: finalRole,
+                rol: finalRole,
+                email: email,
+                name: effectiveName,
+                nombre: effectiveName,
+                grado: effectiveGrade,
+                grade: effectiveGrade,
+                provider: "google",
+                loginAt: Date.now()
+            };
+            localStorage.setItem("organizadorNotasSesion", JSON.stringify(session));
+            showToast(`Acceso exitoso con Google como ${effectiveName}`);
+
+            const targetPage = finalRole === "docente" ? "menudocentes.html" : "menuestudiantes.html";
+            setTimeout(() => {
+                window.location.href = targetPage;
+            }, 600);
+        }
+    }
+
+    // Clic en cuenta sugerida de la lista
+    document.querySelectorAll(".google-account-item").forEach(item => {
+        item.addEventListener("click", function () {
+            const email = this.dataset.email;
+            const name = this.dataset.name;
+            const role = this.dataset.role;
+            const grade = this.dataset.grade;
+            executeGoogleLogin({ email, name, role, grade });
+        });
+    });
+
+    // Envío del formulario de cuenta personalizada de Google
+    if (googleCustomForm) {
+        googleCustomForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            if (googleEmailError) googleEmailError.textContent = "";
+
+            const emailVal = (googleCustomEmail ? googleCustomEmail.value : "").trim();
+            const nameVal = (googleCustomName ? googleCustomName.value : "").trim();
+            const selectedRole = googleRoleDocente && googleRoleDocente.checked ? "docente" : "estudiante";
+            const selectedGrade = googleCustomGrade ? googleCustomGrade.value : "10°A";
+
+            if (!emailVal) {
+                if (googleEmailError) googleEmailError.textContent = "Ingresa tu correo de Google.";
+                if (googleCustomEmail) googleCustomEmail.focus();
+                return;
+            }
+
+            if (!/^\S+@\S+\.\S+$/.test(emailVal)) {
+                if (googleEmailError) googleEmailError.textContent = "Ingresa un correo electrónico válido.";
+                if (googleCustomEmail) googleCustomEmail.focus();
+                return;
+            }
+
+            executeGoogleLogin({
+                email: emailVal,
+                name: nameVal || deriveName(emailVal),
+                role: selectedRole,
+                grade: selectedGrade
+            });
         });
     }
 

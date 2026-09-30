@@ -28,7 +28,7 @@ app.get('/api/supabase/status', async (req, res) => {
   }
 });
 
-// 1. Autenticación (Login)
+// 1. Autenticación (Login tradicional)
 app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, password, role } = req.body;
@@ -44,6 +44,106 @@ app.post('/api/auth/login', async (req, res) => {
   } catch (err) {
     console.error('Error en /api/auth/login:', err);
     res.status(500).json({ success: false, message: 'Error interno del servidor.' });
+  }
+});
+
+// 1.1 Autenticación con Google
+app.post('/api/auth/google', async (req, res) => {
+  try {
+    const { email, name, role, grade, photoUrl } = req.body;
+    if (!email) {
+      return res.status(400).json({ success: false, message: 'El correo de Google es requerido.' });
+    }
+
+    const result = await supabaseService.loginOrRegisterGoogleUser({
+      email,
+      name,
+      role,
+      grade,
+      photoUrl
+    });
+
+    if (!result.success) {
+      return res.status(400).json(result);
+    }
+
+    res.json(result);
+  } catch (err) {
+    console.error('Error en /api/auth/google:', err);
+    res.status(500).json({ success: false, message: 'Error interno en autenticación con Google.' });
+  }
+});
+
+// 1.2 Búsqueda de cuenta para recuperación de contraseña
+app.post('/api/auth/recover-password', async (req, res) => {
+  try {
+    const { email, role } = req.body;
+    if (!email) {
+      return res.status(400).json({ success: false, message: 'El correo electrónico es requerido.' });
+    }
+
+    const result = await supabaseService.findUserForRecovery(email, role);
+    if (!result.success) {
+      return res.status(404).json(result);
+    }
+
+    res.json(result);
+  } catch (err) {
+    console.error('Error en /api/auth/recover-password:', err);
+    res.status(500).json({ success: false, message: 'Error interno al consultar cuenta.' });
+  }
+});
+
+// 1.3 Restablecimiento de contraseña
+app.post('/api/auth/reset-password', async (req, res) => {
+  try {
+    const { email, role, newPassword } = req.body;
+    if (!email || !newPassword) {
+      return res.status(400).json({ success: false, message: 'Correo y nueva contraseña requeridos.' });
+    }
+
+    const result = await supabaseService.resetUserPassword(email, role, newPassword);
+    if (!result.success) {
+      return res.status(400).json(result);
+    }
+
+    res.json(result);
+  } catch (err) {
+    console.error('Error en /api/auth/reset-password:', err);
+    res.status(500).json({ success: false, message: 'Error interno al restablecer contraseña.' });
+  }
+});
+
+// 1.4 Registro de nuevo usuario (Docente o Estudiante)
+app.post('/api/auth/register', async (req, res) => {
+  try {
+    const { nombre, email, password, rol, grado, telefono, asignatura } = req.body;
+    if (!nombre || !email || !password || !rol) {
+      return res.status(400).json({ success: false, message: 'Nombre, correo, contraseña y rol son obligatorios.' });
+    }
+
+    if (password.length < 4) {
+      return res.status(400).json({ success: false, message: 'La contraseña debe tener al menos 4 caracteres.' });
+    }
+
+    const result = await supabaseService.registerUser({
+      nombre,
+      email,
+      password,
+      rol,
+      grado,
+      telefono,
+      asignatura
+    });
+
+    if (!result.success) {
+      return res.status(400).json(result);
+    }
+
+    res.status(201).json(result);
+  } catch (err) {
+    console.error('Error en /api/auth/register:', err);
+    res.status(500).json({ success: false, message: 'Error interno al registrar el usuario.' });
   }
 });
 

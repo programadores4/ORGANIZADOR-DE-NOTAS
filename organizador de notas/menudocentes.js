@@ -23,7 +23,13 @@ document.addEventListener("DOMContentLoaded", function () {
     if (userAvatar) userAvatar.textContent = initial;
     if (welcomeName) welcomeName.textContent = displayName;
     if (profileName) profileName.textContent = displayName;
-    if (profileEmail) profileEmail.textContent = displayEmail;
+    if (profileEmail) {
+        if (session && session.provider === "google") {
+            profileEmail.innerHTML = `${displayEmail} <span style="display:inline-flex;align-items:center;gap:4px;background:#e8f0fe;color:#1a73e8;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;margin-left:6px;vertical-align:middle;"><span>G</span> Cuenta Google</span>`;
+        } else {
+            profileEmail.textContent = displayEmail;
+        }
+    }
     if (profileAvatar) profileAvatar.textContent = initial;
 
     // ---------- Fecha actual ----------

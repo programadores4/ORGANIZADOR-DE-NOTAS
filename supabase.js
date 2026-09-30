@@ -679,10 +679,383 @@ async function deleteReporte(id) {
   return { success: false, message: 'Reporte no encontrado' };
 }
 
+async function loginOrRegisterGoogleUser({ email, name, role, grade, photoUrl }) {
+  const cleanEmail = (email || '').trim().toLowerCase();
+  const effectiveRole = role ? role.toLowerCase() : (cleanEmail.includes('docente') ? 'docente' : 'estudiante');
+  const effectiveGrade = effectiveRole === 'estudiante' ? (grade || '10°A') : null;
+  const effectiveName = name || cleanEmail.split('@')[0].replace(/[._\d]+/g, ' ').trim()
+    .split(' ')
+    .filter(Boolean)
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ') || (effectiveRole === 'docente' ? 'Docente Google' : 'Estudiante Google');
+
+  if (isConfigured && supabase) {
+    try {
+      // 1. Buscar si el usuario ya existe en Supabase
+      const { data: existingUser, error } = await supabase
+        .from('usuarios')
+        .select('*')
+        .eq('email', cleanEmail)
+        .maybeSingle();
+
+      if (existingUser) {
+        return {
+          success: true,
+          user: {
+            id: existingUser.id,
+            name: existingUser.nombre,
+            nombre: existingUser.nombre,
+            email: existingUser.email,
+            role: existingUser.rol,
+            rol: existingUser.rol,
+            grade: existingUser.grado,
+            grado: existingUser.grado,
+            avatar: photoUrl || null,
+            provider: 'google'
+          }
+        };
+      }
+
+      // 2. Si no existe, crear el usuario en Supabase
+      const { data: newUser, error: insertError } = await supabase
+        .from('usuarios')
+        .insert([{
+          nombre: effectiveName,
+          email: cleanEmail,
+          password: 'google-oauth',
+          rol: effectiveRole,
+          grado: effectiveGrade,
+          telefono: null
+        }])
+        .select()
+        .single();
+
+      if (!insertError && newUser) {
+        // Si es estudiante, matricular automáticamente en cursos de su grado
+        if (effectiveRole === 'estudiante' && effectiveGrade) {
+          const { data: cursosGrado } = await supabase
+            .from('cursos')
+            .select('id')
+            .eq('grado', effectiveGrade);
+
+          if (cursosGrado && cursosGrado.length > 0) {
+            const mats = cursosGrado.map(c => ({
+              estudiante_id: newUser.id,
+              curso_id: c.id
+            }));
+            await supabase.from('matriculas').insert(mats);
+          }
+        }
+
+        return {
+          success: true,
+          user: {
+            id: newUser.id,
+            name: newUser.nombre,
+            nombre: newUser.nombre,
+            email: newUser.email,
+            role: newUser.rol,
+            rol: newUser.rol,
+            grade: newUser.grado,
+            grado: newUser.grado,
+            avatar: photoUrl || null,
+            provider: 'google'
+          }
+        };
+      }
+    } catch (e) {
+      console.warn('Error en loginOrRegisterGoogleUser con Supabase, usando local:', e.message);
+    }
+  }
+
+  // Fallback en memoria
+  let user = mockData.usuarios.find(u => u.email.toLowerCase() === cleanEmail);
+  if (!user) {
+    user = {
+      id: mockData.usuarios.length + 1,
+      nombre: effectiveName,
+      email: cleanEmail,
+      password: 'google-oauth',
+      rol: effectiveRole,
+      grado: effectiveGrade,
+      telefono: null
+    };
+    mockData.usuarios.push(user);
+  }
+
+  return {
+    success: true,
+    user: {
+      id: user.id,
+      name: user.nombre,
+      nombre: user.nombre,
+      email: user.email,
+      role: user.rol,
+      rol: user.rol,
+      grade: user.grado,
+      grado: user.grado,
+      avatar: photoUrl || null,
+      provider: 'google'
+    }
+  };
+}
+
+async function findUserForRecovery(email, role) {
+  const cleanEmail = (email || '').trim().toLowerCase();
+  const effectiveRole = (role || 'docente').toLowerCase();
+
+  if (isConfigured && supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('usuarios')
+        .select('id, nombre, email, password, rol, grado, telefono')
+        .eq('email', cleanEmail)
+        .maybeSingle();
+
+      if (!error && data) {
+        if (data.rol !== effectiveRole) {
+          return {
+            success: false,
+            message: `El correo "${cleanEmail}" está registrado como ${data.rol}, no como ${effectiveRole}. Cambia al modo ${data.rol} para recuperarla.`
+          };
+        }
+
+        return {
+          success: true,
+          user: {
+            id: data.id,
+            nombre: data.nombre,
+            name: data.nombre,
+            email: data.email,
+            rol: data.rol,
+            role: data.rol,
+            grado: data.grado,
+            grade: data.grado,
+            password: data.password
+          }
+        };
+      }
+    } catch (e) {
+      console.warn('Error en findUserForRecovery con Supabase:', e.message);
+    }
+  }
+
+  // Fallback en memoria
+  const user = mockData.usuarios.find(u => u.email.toLowerCase() === cleanEmail);
+  if (user) {
+    if (user.rol !== effectiveRole) {
+      return {
+        success: false,
+        message: `El correo "${cleanEmail}" está registrado como ${user.rol}, no como ${effectiveRole}. Cambia al modo ${user.rol} para recuperarla.`
+      };
+    }
+
+    return {
+      success: true,
+      user: {
+        id: user.id,
+        nombre: user.nombre,
+        name: user.nombre,
+        email: user.email,
+        rol: user.rol,
+        role: user.rol,
+        grado: user.grado,
+        grade: user.grado,
+        password: user.password
+      }
+    };
+  }
+
+  return {
+    success: false,
+    message: `No se encontró ninguna cuenta registrada con el correo "${cleanEmail}" para el rol de ${effectiveRole}.`
+  };
+}
+
+async function resetUserPassword(email, role, newPassword) {
+  const cleanEmail = (email || '').trim().toLowerCase();
+  const effectiveRole = (role || 'docente').toLowerCase();
+
+  if (!newPassword || newPassword.length < 4) {
+    return { success: false, message: 'La nueva contraseña debe tener al menos 4 caracteres.' };
+  }
+
+  if (isConfigured && supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('usuarios')
+        .update({ password: newPassword })
+        .eq('email', cleanEmail)
+        .eq('rol', effectiveRole)
+        .select();
+
+      if (!error && data && data.length > 0) {
+        return {
+          success: true,
+          message: 'Contraseña actualizada correctamente en la base de datos de Supabase.'
+        };
+      }
+    } catch (e) {
+      console.warn('Error en resetUserPassword con Supabase:', e.message);
+    }
+  }
+
+  // Fallback en memoria
+  const user = mockData.usuarios.find(u => u.email.toLowerCase() === cleanEmail && u.rol === effectiveRole);
+  if (user) {
+    user.password = newPassword;
+    return {
+      success: true,
+      message: 'Contraseña restablecida exitosamente.'
+    };
+  }
+
+  return {
+    success: false,
+    message: 'No se pudo actualizar la contraseña. Verifica que el correo y rol correspondan a una cuenta existente.'
+  };
+}
+
+async function registerUser({ nombre, email, password, rol, grado, telefono, asignatura }) {
+  const cleanEmail = (email || '').trim().toLowerCase();
+  const effectiveRole = (rol || 'estudiante').toLowerCase();
+  const effectiveGrade = effectiveRole === 'estudiante' ? (grado || '10°A') : null;
+
+  if (!cleanEmail || !password || !nombre) {
+    return { success: false, message: 'Todos los campos obligatorios deben completarse.' };
+  }
+
+  if (isConfigured && supabase) {
+    try {
+      // 1. Verificar si ya existe un usuario con este correo
+      const { data: existingUser } = await supabase
+        .from('usuarios')
+        .select('id, email')
+        .eq('email', cleanEmail)
+        .maybeSingle();
+
+      if (existingUser) {
+        return { success: false, message: `Ya existe una cuenta registrada con el correo "${cleanEmail}".` };
+      }
+
+      // 2. Insertar nuevo usuario
+      const { data: newUser, error: insertError } = await supabase
+        .from('usuarios')
+        .insert([{
+          nombre: nombre.trim(),
+          email: cleanEmail,
+          password: password,
+          rol: effectiveRole,
+          grado: effectiveGrade,
+          telefono: telefono ? telefono.trim() : null
+        }])
+        .select()
+        .single();
+
+      if (!insertError && newUser) {
+        // Si es estudiante, matricular en cursos de su grado
+        if (effectiveRole === 'estudiante' && effectiveGrade) {
+          const { data: cursosGrado } = await supabase
+            .from('cursos')
+            .select('id')
+            .eq('grado', effectiveGrade);
+
+          if (cursosGrado && cursosGrado.length > 0) {
+            const mats = cursosGrado.map(c => ({
+              estudiante_id: newUser.id,
+              curso_id: c.id
+            }));
+            await supabase.from('matriculas').insert(mats);
+          }
+        } else if (effectiveRole === 'docente' && asignatura) {
+          // Si es docente y especificó un área, crear un curso asociado
+          await supabase.from('cursos').insert([{
+            nombre: asignatura.trim(),
+            grado: '10°A',
+            docente_id: newUser.id,
+            descripcion: `Área asignada al docente ${nombre.trim()}`,
+            progreso: 80
+          }]);
+        }
+
+        return {
+          success: true,
+          user: {
+            id: newUser.id,
+            nombre: newUser.nombre,
+            name: newUser.nombre,
+            email: newUser.email,
+            rol: newUser.rol,
+            role: newUser.rol,
+            grado: newUser.grado,
+            grade: newUser.grado,
+            telefono: newUser.telefono
+          }
+        };
+      }
+      if (insertError) {
+        throw insertError;
+      }
+    } catch (e) {
+      console.warn('Error al registrar usuario en Supabase, usando local:', e.message);
+    }
+  }
+
+  // Fallback en memoria
+  const existingMock = mockData.usuarios.find(u => u.email.toLowerCase() === cleanEmail);
+  if (existingMock) {
+    return { success: false, message: `Ya existe una cuenta registrada con el correo "${cleanEmail}".` };
+  }
+
+  const newMockUser = {
+    id: mockData.usuarios.length + 1,
+    nombre: nombre.trim(),
+    email: cleanEmail,
+    password: password,
+    rol: effectiveRole,
+    grado: effectiveGrade,
+    telefono: telefono ? telefono.trim() : null
+  };
+  mockData.usuarios.push(newMockUser);
+
+  if (effectiveRole === 'docente' && asignatura) {
+    mockData.cursos.push({
+      id: mockData.cursos.length + 1,
+      nombre: asignatura.trim(),
+      grado: '10°A',
+      docente_id: newMockUser.id,
+      docente_nombre: newMockUser.nombre,
+      descripcion: `Área asignada al docente ${newMockUser.nombre}`,
+      progreso: 80,
+      total_estudiantes: 28,
+      promedio: 4.2
+    });
+  }
+
+  return {
+    success: true,
+    user: {
+      id: newMockUser.id,
+      nombre: newMockUser.nombre,
+      name: newMockUser.nombre,
+      email: newMockUser.email,
+      rol: newMockUser.rol,
+      role: newMockUser.rol,
+      grado: newMockUser.grado,
+      grade: newMockUser.grado,
+      telefono: newMockUser.telefono
+    }
+  };
+}
+
 module.exports = {
   isConfigured,
   getStatus,
   loginUser,
+  loginOrRegisterGoogleUser,
+  findUserForRecovery,
+  resetUserPassword,
+  registerUser,
   getCursos,
   createCurso,
   getEstudiantes,
